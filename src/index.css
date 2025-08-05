@@ -1,3 +1,14 @@
+html {
+  overscroll-behavior: none;
+}
+
 body {
   margin: 0;
+  height: 100%;
+}
+
+
+/* Необходимо т.к. счётчики имеют по умолчанию position: absolute */
+.counter.default {
+  position: static !important;
 }
