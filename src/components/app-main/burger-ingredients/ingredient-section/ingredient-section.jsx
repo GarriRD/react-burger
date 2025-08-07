@@ -1,25 +1,25 @@
 import Ingredient from "./ingredient/ingredient"
 import ingredientSectionStyles from './ingredient-section.module.css';
-import { v4 } from 'uuid';
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 const IngredientSection = (props) => {
-  const sectionId = v4();
+  // заменил id на ref
+  const sectionRef = useRef();
 
   useEffect(() => {
 
     if (props.current === props.type) {
-      document.getElementById(sectionId).scrollIntoView();
+      sectionRef.current.scrollIntoView()
     }
   });
 
   return (
-    <div className={ingredientSectionStyles.wrapper} id={sectionId}>
-      <h2>{props.title}</h2>
+    <div className={ingredientSectionStyles.wrapper} ref={sectionRef}>
+      <h2 className={'text text_type_main-large'} >{props.title}</h2>
       
       <ul className={ingredientSectionStyles.ingredients}>
         {props.ingredientsData.map((item, i) => {
-          return <Ingredient key={i} ingredientData={item} changeCount={props.changeCount}/>
+          return <Ingredient key={i} ingredientData={item} />
         })}
       </ul>
     </div>

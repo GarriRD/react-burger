@@ -5,7 +5,7 @@ import IngredientSection from "./ingredient-section/ingredient-section";
 
 import burgerIngredientsStyles from './burger-ingredients.module.css';
 
-const BurgerIngredients = ({ data, changeCount }) => {
+const BurgerIngredients = ({ data }) => {
   const [current, setCurrent] = useState('bun');
 
     const ingredientSections = useMemo(() => {
@@ -25,7 +25,6 @@ const BurgerIngredients = ({ data, changeCount }) => {
 
 
           const sectionProps = {
-            changeCount: changeCount,
             setCurrent: setCurrent,
             current: current,
             title: item[0],
@@ -37,7 +36,7 @@ const BurgerIngredients = ({ data, changeCount }) => {
         })}
       </section>
     );
-  }, [data, changeCount, current]);
+  }, [data, current]);
 
   return (
     <section className={burgerIngredientsStyles.section}>

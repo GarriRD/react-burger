@@ -6,7 +6,3 @@
 .secondary {
   color: #8383ab;
 }
-
-.defeault {
-  composes: text text_type_main-default from global;
-}

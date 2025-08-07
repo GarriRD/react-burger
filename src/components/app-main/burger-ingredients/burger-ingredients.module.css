@@ -11,5 +11,5 @@
   flex-direction: column; 
   gap: 5%;
   max-height: 30%;
-  overflow: scroll;
+  overflow: auto;
 }

@@ -1,9 +1,9 @@
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientStyles from './ingredient.module.css';
 
-const Ingredient = ({ ingredientData, changeCount }) => {
+const Ingredient = ({ ingredientData }) => {
   return ( 
-    <div className={ingredientStyles.wrapper} onClick={() => changeCount(ingredientData, 'increment') }>
+    <div className={ingredientStyles.wrapper} >
       <span className={ingredientStyles.preview} style={{backgroundImage: `url(${ingredientData.image})`}}>
         {ingredientData.count > 0 && <Counter count={ingredientData.count} size='default'/>}
       </span>
