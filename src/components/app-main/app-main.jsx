@@ -1,7 +1,9 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useMemo } from 'react';
 import appMainStyles from './app-main.module.css';
 import BurgerIngredients from './burger-ingredients/burger-ingredients';
 import BurgerConstructor from './burger-contructor/burger-constructor';
+import PropTypes from 'prop-types';
+import { ingredientDataProp } from 'utils/props-types';
 
 
 const AppMain = ({ ingredientsData }) => {
@@ -20,8 +22,8 @@ const AppMain = ({ ingredientsData }) => {
     setCurrentData([...currentData]);
   }, [currentData]);
   
-  // теперь данные по булке определяются в selected-items, а а сам заказ изначально имеет хотя бы одну булку
-  const selectedData = currentData.filter(item => item.count > 0);
+  // теперь данные по булке определяются в selected-items, а сам заказ изначально имеет хотя бы одну булку
+  const selectedData = useMemo(() => currentData.filter(item => item.count > 0), [currentData]);
 
   return (
     <main className={appMainStyles.main}>
@@ -29,6 +31,10 @@ const AppMain = ({ ingredientsData }) => {
       <BurgerConstructor selectedData={selectedData} changeCount={changeCount} />
     </main>
   );
+}
+
+AppMain.propTypes = {
+  ingredientsData: PropTypes.arrayOf(ingredientDataProp).isRequired,
 }
 
 export default AppMain;

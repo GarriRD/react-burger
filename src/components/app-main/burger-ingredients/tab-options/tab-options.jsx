@@ -1,5 +1,6 @@
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import tabOptionsStyles from './tab-options.module.css';
+import PropTypes from 'prop-types';
 
 const TabOptions = ({ current, setCurrent}) => {
 
@@ -10,6 +11,11 @@ const TabOptions = ({ current, setCurrent}) => {
       <Tab value={'main'} active={current === 'main'} onClick={setCurrent} >Начинка</Tab>
     </span>
   );
+}
+
+TabOptions.propTypes = {
+  current: PropTypes.string.isRequired,
+  setCurrent: PropTypes.func.isRequired,
 }
 
 export default TabOptions;

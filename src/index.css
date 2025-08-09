@@ -12,3 +12,45 @@ body {
 .counter.default {
   position: static !important;
 }
+
+
+.m {
+  position: absolute; 
+  background-color: rgb(56, 56, 56);
+  opacity: 0.5;
+  left: 0; 
+  right: 0; 
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.m1 {
+  position: absolute;
+  background-color: blue;
+  height: 50%;
+  width: 50%;
+  display: flex;
+  justify-content: end;
+}
+
+.close-btn {
+  position: absolute;
+  top: 2%;
+  right: 2%;
+  background-color: yellow;
+  color: black;
+}
+
+.close-btn:hover {
+  background-color: brown;
+  cursor: pointer;
+}
+
+.some {
+  width: 90%;
+  height: 90%;
+  background-color: red;
+}

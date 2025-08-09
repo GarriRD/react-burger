@@ -1,11 +1,13 @@
 import Ingredient from "./ingredient/ingredient"
 import ingredientSectionStyles from './ingredient-section.module.css';
 import { useEffect, useRef } from "react";
+import PropTypes from 'prop-types';
+import { ingredientDataProp } from "utils/props-types";
 
 const IngredientSection = (props) => {
   // заменил id на ref
   const sectionRef = useRef();
-
+  
   useEffect(() => {
 
     if (props.current === props.type) {
@@ -24,6 +26,12 @@ const IngredientSection = (props) => {
       </ul>
     </div>
   );
+}
+
+IngredientSection.propTypes = {
+  type: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  ingredientsData: PropTypes.arrayOf(ingredientDataProp).isRequired,
 }
 
 export default IngredientSection;

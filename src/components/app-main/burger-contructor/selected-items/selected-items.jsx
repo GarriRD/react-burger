@@ -1,5 +1,7 @@
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import selectedItemsSTyles from './selected-items.module.css';
+import PropTypes from 'prop-types';
+import { ingredientDataProp } from "utils/props-types";
 
 const SelectedItems = ({ selectedData, changeCount }) => {
   const bunData = selectedData.filter(item => item.type === 'bun')[0];
@@ -18,14 +20,15 @@ const SelectedItems = ({ selectedData, changeCount }) => {
             вне семантического блока верстки
         */}
         <ul className={selectedItemsSTyles.selection}>
-          {bunData && <ConstructorElement 
-            isLocked={true} 
-            type='top' 
-            text={`${bunData.name} (верх)`} 
-            price={bunData.price} 
-            thumbnail={bunData.image} 
-            key={'-1'}
-          />}
+          <li key={-1}>
+            {bunData && <ConstructorElement 
+              isLocked={true} 
+              type='top' 
+              text={`${bunData.name} (верх)`} 
+              price={bunData.price} 
+              thumbnail={bunData.image} 
+            />}
+          </li>
           
           {selectedData.map((item, i) => {
             const constructorElements = [];
@@ -39,8 +42,8 @@ const SelectedItems = ({ selectedData, changeCount }) => {
             for (let j = 0; j < item.count; j++) {
               // заменил создание ключа, вместо v4() теперь уникальный id ингредиента + его его индекс в счётчике количества
               constructorElements.push(
-                <li>
-                  <ConstructorElement  {...constructorProps} handleClose={() => changeCount(item, 'decrement')} key={`${item._id}_${j}`}/>
+                <li key={`${item._id}_${j}`}>
+                  <ConstructorElement  {...constructorProps}  handleClose={() => changeCount(item, 'decrement')}/>
                 </li>
               );
     
@@ -48,18 +51,23 @@ const SelectedItems = ({ selectedData, changeCount }) => {
     
             return constructorElements;
           }).flat()}
-
-          {bunData && <ConstructorElement 
-            isLocked={true} 
-            type='bottom' 
-            text={`${bunData.name} (низ)`} 
-            price={bunData.price} 
-            thumbnail={bunData.image}
-            key={'-2'}
-          />}
+          <li key={-2}>
+            {bunData && <ConstructorElement 
+              isLocked={true} 
+              type='bottom' 
+              text={`${bunData.name} (низ)`} 
+              price={bunData.price} 
+              thumbnail={bunData.image}
+            />}
+          </li>
         </ul>
       </section>
     );
+}
+
+SelectedItems.propTypes = {
+  selectedData: PropTypes.arrayOf(ingredientDataProp).isRequired,
+  changeCount: PropTypes.func.isRequired,
 }
 
 

@@ -15,27 +15,31 @@
 const fetchPendingOrder  = () => {
   return [
     {
-      _id: '60666c42cc7b410027a1a9b1',
+      _id: '643d69a5c3f7b9001cfa093c',
       count: 1,
     },
     {
-      _id: '60666c42cc7b410027a1a9bb',
+      _id: '643d69a5c3f7b9001cfa0946',
       count: 2,
     },
     {
-      _id: '60666c42cc7b410027a1a9b9',
+      _id: '643d69a5c3f7b9001cfa093f',
       count: 1,
     },
     {
-      _id: '60666c42cc7b410027a1a9b4',
+      _id: '643d69a5c3f7b9001cfa0948',
       count: 1,
     },
     {
-      _id: '60666c42cc7b410027a1a9bc',
+      _id: '643d69a5c3f7b9001cfa0942',
       count: 1,
     },
     {
-      _id: '60666c42cc7b410027a1a9be',
+      _id: '643d69a5c3f7b9001cfa0949',
+      count: 2,
+    },
+    {
+      _id: '643d69a5c3f7b9001cfa094a',
       count: 2,
     }
 
@@ -45,6 +49,9 @@ const fetchPendingOrder  = () => {
 
 /* Функция для получения данных для конструктора из инредиентов и заказа */
 const parseOrder = (ingredientsData, orderData) => {
+  if(ingredientsData.length === 0 || orderData.length === 0) {
+    return { status: 'error', ingredientsData: [] };
+  }
   let status = 'success';
   
   const ingredients = ingredientsData.map(item => {
@@ -56,9 +63,7 @@ const parseOrder = (ingredientsData, orderData) => {
   orderData.forEach(item => {
     const ingredient = ingredients.filter(ingredientItem => ingredientItem._id === item._id)[0];
 
-    if(!ingredient) {
-      status = 'incomplete';
-    } else {
+    if(ingredient) {
       ingredient.count = item.count;
     }
   });

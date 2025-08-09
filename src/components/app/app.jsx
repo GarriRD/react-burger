@@ -1,25 +1,51 @@
 import AppHeader from "components/app-header/app-header";
 import AppMain from "components/app-main/app-main";
-import { useMemo, useState } from "react";
+import ErrorNotice from "components/error-notice/error-notice";
+import { useEffect, useState } from "react";
 import { getIngredientsDetails } from "services/ingredients-service";
 import { fetchPendingOrder, parseOrder } from "services/orders-service";
 
+
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [status, setStatus] = useState('success');
+  const [ingredientsData, setIngredientsData] = useState([]);
 
-  const ingredients = useMemo(() => {
-    setIsLoading(false);
+  useEffect(() => {
+    const abortController = new AbortController();
+    const abortSignal = abortController.signal;
 
-    return parseOrder(
-      getIngredientsDetails(),
-      fetchPendingOrder()
-    )
+    const loadIngredientsData = async () => {
+
+      const loadedIngredients = await getIngredientsDetails(abortSignal);
+      
+      const currentOrder = fetchPendingOrder();
+      const parsedIngredients = parseOrder(loadedIngredients, currentOrder);
+      
+      setIngredientsData(parsedIngredients.ingredientsData);
+      setIsLoading(false);
+      setStatus(parsedIngredients.status);
+    }
+    
+    loadIngredientsData();
+
+    return () => {
+      abortController.abort();
+    }
+    
   }, []);
 
+
+  let appMain = <></>
+
+  if(!isLoading) {
+    appMain = status !== 'error' ? <AppMain ingredientsData={ingredientsData} /> : <ErrorNotice />;
+  }
+  
   return (
     <>
       <AppHeader />
-      {!isLoading ? <AppMain ingredientsData={ingredients.ingredientsData}/> : <></>}
+      {appMain}
     </>
   );
 }

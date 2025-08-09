@@ -1,9 +1,9 @@
-import TabOptions from "./tab-options/tab-options";
-
 import { useMemo, useState } from "react";
+import PropTypes from 'prop-types';
+import TabOptions from "./tab-options/tab-options";
 import IngredientSection from "./ingredient-section/ingredient-section";
-
 import burgerIngredientsStyles from './burger-ingredients.module.css';
+import { ingredientDataProp } from "utils/props-types";
 
 const BurgerIngredients = ({ data }) => {
   const [current, setCurrent] = useState('bun');
@@ -44,6 +44,10 @@ const BurgerIngredients = ({ data }) => {
       {ingredientSections}
     </section>
   );
+}
+
+BurgerIngredients.propTypes = {
+  data: PropTypes.arrayOf(ingredientDataProp).isRequired,
 }
 
 export default BurgerIngredients;
