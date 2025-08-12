@@ -1,0 +1,7 @@
+.header-option {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3%;
+  white-space: nowrap;
+}

@@ -1,0 +1,18 @@
+.wrapper {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(28, 28, 37);
+}
+
+.close-btn {
+  position: absolute;
+  top: 2%;
+  right: 2%;
+}
+
+.close-btn:hover {
+  cursor: pointer;
+  background-color: rgb(156, 156, 156);
+}
