@@ -3,11 +3,16 @@ import ingredientStyles from './ingredient.module.css';
 import { useState } from 'react';
 import IngredientDetails from './ingredient-details/ingredient-details';
 import { ingredientDataProp } from 'utils/props-types';
+import Modal from 'components/modal/modal';
 
 const Ingredient = ({ ingredientData }) => {
   const [isVisible, setIsVisible] = useState(false);
   
-  const ingredientDetails = isVisible && <IngredientDetails ingredientData={ingredientData} setIsVisible={setIsVisible} />
+  const ingredientDetails = (isVisible
+    && <Modal setIsVisible={setIsVisible}>
+        <IngredientDetails ingredientData={ingredientData} />
+      </Modal>
+  )
 
   return ( 
     <div className={ingredientStyles.wrapper} onClick={() => setIsVisible(true)}>

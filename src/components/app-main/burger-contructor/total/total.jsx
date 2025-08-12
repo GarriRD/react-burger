@@ -4,6 +4,7 @@ import { useState } from 'react';
 import OrderDetails from './order-details/order-details';
 import PropTypes from 'prop-types';
 import { ingredientDataProp } from 'utils/props-types';
+import Modal from 'components/modal/modal';
 
 const orderId = '034536'
 
@@ -16,7 +17,11 @@ const Total = ({ totalIngredientsData }) => {
     setIsVisible(true);
   }
 
-  const orderDetails = isVisible && <OrderDetails setIsVisible={setIsVisible} orderId={orderId} />
+  const orderDetails = (isVisible 
+    && <Modal setIsVisible={setIsVisible}>
+        <OrderDetails orderId={orderId} />
+      </Modal>
+  )
 
   return (
     <span className={totalStyles.wrapper}>
