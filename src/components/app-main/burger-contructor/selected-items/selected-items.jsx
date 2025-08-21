@@ -2,8 +2,13 @@ import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-comp
 import selectedItemsSTyles from './selected-items.module.css';
 import PropTypes from 'prop-types';
 import { ingredientDataProp } from "utils/props-types";
+import ingredinetsSlice from "store/ingredients/ingredients-slice";
+import { useDispatch } from "react-redux";
 
-const SelectedItems = ({ selectedData, changeCount }) => {
+const SelectedItems = ({ selectedData }) => {
+  const { setIngredientCount } = ingredinetsSlice.actions;
+  const dispatch = useDispatch();
+
   const bunData = selectedData.filter(item => item.type === 'bun')[0];
   
   if(bunData) {
@@ -43,7 +48,7 @@ const SelectedItems = ({ selectedData, changeCount }) => {
               // заменил создание ключа, вместо v4() теперь уникальный id ингредиента + его его индекс в счётчике количества
               constructorElements.push(
                 <li key={`${item._id}_${j}`}>
-                  <ConstructorElement  {...constructorProps}  handleClose={() => changeCount(item, 'decrement')}/>
+                  <ConstructorElement  {...constructorProps}  handleClose={() => dispatch(setIngredientCount({id: item._id, newCount: item.count - 1}))}/>
                 </li>
               );
     

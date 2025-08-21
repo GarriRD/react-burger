@@ -1,17 +1,16 @@
-import { useMemo, useState } from "react";
-import PropTypes from 'prop-types';
+import { useMemo } from "react";
 import TabOptions from "./tab-options/tab-options";
 import IngredientSection from "./ingredient-section/ingredient-section";
 import burgerIngredientsStyles from './burger-ingredients.module.css';
-import { ingredientDataProp } from "utils/props-types";
+import {  useSelector } from "react-redux";
 
-const BurgerIngredients = ({ data }) => {
-  const [current, setCurrent] = useState('bun');
+const BurgerIngredients = () => {
+  const ingredientsData = useSelector(store => store.ingredients.ingredients);
 
-    const ingredientSections = useMemo(() => {
-    const buns = data.filter(item => item.type === 'bun');
-    const sauces = data.filter(item => item.type === 'sauce');
-    const mains = data.filter(item => item.type === 'main');
+  const ingredientSections = useMemo(() => {
+    const buns = ingredientsData.filter(item => item.type === 'bun');
+    const sauces = ingredientsData.filter(item => item.type === 'sauce');
+    const mains = ingredientsData.filter(item => item.type === 'main');
 
     const sections = [
       ['Булки', 'bun', buns],
@@ -25,8 +24,6 @@ const BurgerIngredients = ({ data }) => {
 
 
           const sectionProps = {
-            setCurrent: setCurrent,
-            current: current,
             title: item[0],
             type: item[1],
             ingredientsData: item[2]
@@ -36,18 +33,14 @@ const BurgerIngredients = ({ data }) => {
         })}
       </section>
     );
-  }, [data, current]);
+  }, [ingredientsData]);
 
   return (
     <section className={burgerIngredientsStyles.section}>
-      <TabOptions current={current} setCurrent={setCurrent} />
+      <TabOptions />
       {ingredientSections}
     </section>
   );
-}
-
-BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(ingredientDataProp).isRequired,
 }
 
 export default BurgerIngredients;

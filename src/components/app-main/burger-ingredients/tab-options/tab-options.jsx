@@ -1,21 +1,23 @@
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import tabOptionsStyles from './tab-options.module.css';
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { useCallback } from 'react';
+import ingredinetsSlice from 'store/ingredients/ingredients-slice';
 
-const TabOptions = ({ current, setCurrent}) => {
+const TabOptions = () => {
+  const currentSection = useSelector(store => store.ingredients.currentSection);
+  const dispatch = useDispatch();
+  const { setCurrentSection } = ingredinetsSlice.actions;
+
+  const dispatchCurrent = useCallback(sectionName => dispatch(setCurrentSection(sectionName)), [dispatch, setCurrentSection])
 
   return (
     <span className={tabOptionsStyles.tab}>
-      <Tab value={'bun'} active={current === 'bun'} onClick={setCurrent} >Булки</Tab>
-      <Tab value={'sauce'} active={current === 'sauce'} onClick={setCurrent} >Соусы</Tab>
-      <Tab value={'main'} active={current === 'main'} onClick={setCurrent} >Начинка</Tab>
+      <Tab value={'bun'} active={currentSection === 'bun'} onClick={dispatchCurrent} >Булки</Tab>
+      <Tab value={'sauce'} active={currentSection === 'sauce'} onClick={dispatchCurrent} >Соусы</Tab>
+      <Tab value={'main'} active={currentSection === 'main'} onClick={dispatchCurrent} >Начинка</Tab>
     </span>
   );
-}
-
-TabOptions.propTypes = {
-  current: PropTypes.string.isRequired,
-  setCurrent: PropTypes.func.isRequired,
 }
 
 export default TabOptions;
