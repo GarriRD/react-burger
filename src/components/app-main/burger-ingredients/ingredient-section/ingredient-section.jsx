@@ -3,14 +3,15 @@ import ingredientSectionStyles from './ingredient-section.module.css';
 import { useEffect, useRef } from "react";
 import PropTypes from 'prop-types';
 import { ingredientDataProp } from "utils/props-types";
+import { useSelector } from "react-redux";
 
 const IngredientSection = (props) => {
-  // заменил id на ref
   const sectionRef = useRef();
+  const currentSection = useSelector(store => store.ingredients.currentSection);
   
   useEffect(() => {
 
-    if (props.current === props.type) {
+    if (currentSection === props.type) {
       sectionRef.current.scrollIntoView()
     }
   });
