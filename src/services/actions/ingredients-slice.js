@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getIngredientsDetails } from "services/ingredients-service";
 import { fetchPendingOrder, parseOrder } from "services/orders-service";
+import selectedIngredientsSlice from "services/actions/selected-ingredients-slice";
 
 const getIngredients = createAsyncThunk('ingredients/get',
   async (abortSignal, thunkApi) => {
@@ -32,15 +33,15 @@ const ingredinetsSlice = createSlice({
   },
   reducers: {
     setIngredientCount: (state, action) => {
-      let ingredient = state.ingredients.filter(item => item._id === action.payload.id);
-
-      if (ingredient.length() === 0) {
-        throw new Error('Attempted to change ingredient with non-existend id');
+      const currentIngredient = action.payload.ingredientItem;
+      let ingredient = state.ingredients.filter(item => item._id === currentIngredient._id);
+      if (ingredient.length === 0) {
+        throw new Error('Попытка изменить несуществующий ингредиент');
       }
-
+      
       ingredient = ingredient[0];
       ingredient.count = action.payload.newCount;
-
+      
       return state;
     },
     
@@ -67,6 +68,33 @@ const ingredinetsSlice = createSlice({
       state.ingredientsLoad = false;
       state.ingredientsError = true;
       state.ingredients = [];
+    }).addCase(selectedIngredientsSlice.actions.setBun, (state, action) => {
+      const buns = state.ingredients.filter(item => item.type === 'bun');
+
+      buns.forEach(item => {
+        if (action.payload._id === item._id) {
+          item.count = 1;
+        } else {
+          item.count = 0;
+        }
+      })
+    }).addCase(selectedIngredientsSlice.actions.removeSelectedItem, (state, action) => {
+      const removedItem = action.payload;
+
+      state.ingredients.forEach(item => {
+        if(item._id === removedItem._id) {
+          item.count = item.count - 1;
+        }
+      });
+
+    }).addCase(selectedIngredientsSlice.actions.addSelectedItem, (state, action) => {
+      const addeditem = action.payload;
+
+      state.ingredients.forEach(item => {
+        if(item._id === addeditem._id) {
+          item.count = item.count + 1;
+        }
+      });
     })
   }
 });

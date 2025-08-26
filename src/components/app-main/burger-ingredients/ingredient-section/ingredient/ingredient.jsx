@@ -1,22 +1,32 @@
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientStyles from './ingredient.module.css';
-import { useState } from 'react';
-import IngredientDetails from './ingredient-details/ingredient-details';
 import { ingredientDataProp } from 'utils/props-types';
-import Modal from 'components/modal/modal';
+import { useDispatch } from 'react-redux';
+import shownIngredientSlice from 'services/actions/shown-ingredient-slice';
+import { useDrag } from 'react-dnd';
+import selectedIngredientsSlice from 'services/actions/selected-ingredients-slice';
 
 const Ingredient = ({ ingredientData }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  
-  const ingredientDetails = (isVisible
-    && <Modal setIsVisible={setIsVisible}>
-        <IngredientDetails ingredientData={ingredientData} />
-      </Modal>
-  )
+  const dispatch = useDispatch();
+  const { setIngredientData, modalSwitch } = shownIngredientSlice.actions;
+  const { highlightSwitch } = selectedIngredientsSlice.actions;
+
+  const [, dragRef] = useDrag({
+    type: 'ingredient',
+    item: () => {
+      dispatch(highlightSwitch());    
+      return {ingredientData}
+    },
+    end: () => dispatch(highlightSwitch()),
+  })
+
+  const showModal = () => {
+    dispatch(setIngredientData(ingredientData));
+    dispatch(modalSwitch());
+  }
 
   return ( 
-    <div className={ingredientStyles.wrapper} onClick={() => setIsVisible(true)}>
-      {ingredientDetails}
+    <div className={ingredientStyles.wrapper} onClick={showModal} ref={dragRef}>
       <span className={ingredientStyles.preview} style={{backgroundImage: `url(${ingredientData.image})`}}>
         {ingredientData.count > 0 && <Counter count={ingredientData.count} size='default'/>}
       </span>

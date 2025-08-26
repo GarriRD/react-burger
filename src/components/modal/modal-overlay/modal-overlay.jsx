@@ -2,14 +2,14 @@ import { useId } from 'react';
 import modalOverlayStyles from './modal-overlay.module.css';
 import PropTypes from 'prop-types';
 
-const ModalOverlay = ({ children, setIsVisible }) => {
+const ModalOverlay = ({ children, modalSwitcher }) => {
   const modalId = useId();
 
   const handleClick = e => {    
     
     if(e.target.id === modalId){
       e.stopPropagation();
-      setIsVisible(false);
+      modalSwitcher();
     }
   }
 
@@ -21,7 +21,7 @@ const ModalOverlay = ({ children, setIsVisible }) => {
 }
 
 ModalOverlay.propTypes = {
-  setIsVisible: PropTypes.func.isRequired,
+  modalSwitcher: PropTypes.func.isRequired,
   children: PropTypes.element.isRequired,
 }
 

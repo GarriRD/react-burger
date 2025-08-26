@@ -1,40 +1,49 @@
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import totalStyles from './total.module.css';
-import { useState } from 'react';
+import { useMemo } from 'react';
 import OrderDetails from './order-details/order-details';
-import PropTypes from 'prop-types';
-import { ingredientDataProp } from 'utils/props-types';
 import Modal from 'components/modal/modal';
+import { useDispatch, useSelector } from 'react-redux';
+import orderSlice, { getOrderData } from 'services/actions/order-slice';
 
-const orderId = '034536'
+const Total = () => {
+  const dispatch = useDispatch();
+  const bunData = useSelector(store => store.selectedIngredients.selectedBun);
+  const ingredientsData = useSelector(store => store.selectedIngredients.selectedIngredients);
+  const orderModalVisible = useSelector(store => store.order.orderModalVisible);
+  
+  const { modalSwitch } = orderSlice.actions;
 
+  const total = useMemo(() => {
+    return ingredientsData.reduce((acc, curr) => acc + curr.price, 0) + bunData.price * 2;
+  }, [ingredientsData, bunData]);
 
-const Total = ({ totalIngredientsData }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const total = totalIngredientsData.reduce((acc, curr) => acc + curr.price * curr.count, 0);
-
-  const handleClick = e => {
-    setIsVisible(true);
+  const modalSwitcher = () => {
+    dispatch(modalSwitch());
   }
 
-  const orderDetails = (isVisible 
-    && <Modal setIsVisible={setIsVisible}>
-        <OrderDetails orderId={orderId} />
+
+
+  const orderDetails = (orderModalVisible 
+    && <Modal modalSwitcher={modalSwitcher}>
+        <OrderDetails/>
       </Modal>
   )
+
+
+  const loadOrder = () => {
+    dispatch(getOrderData({ allIngredientsData: [...ingredientsData, bunData] }));
+    dispatch(modalSwitch());
+  }
 
   return (
     <span className={totalStyles.wrapper}>
       {orderDetails}
       <span className='text text_type_main-large'>{total}</span>
       <CurrencyIcon type='primary' />
-      <Button htmlType="button" type="primary" size="large" onClick={handleClick}>Оформить</Button>
+      <Button htmlType="button" type="primary" size="large" onClick={loadOrder}>Оформить</Button>
     </span>
   );
-}
-
-Total.propTypes = {
-  totalIngredientsData: PropTypes.arrayOf(ingredientDataProp).isRequired,
 }
 
 export default Total;

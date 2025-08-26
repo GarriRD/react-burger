@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-const ingredientDataProp = PropTypes.shape({
+const ingredientObject = {
   _id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
@@ -12,7 +12,20 @@ const ingredientDataProp = PropTypes.shape({
   image: PropTypes.string.isRequired,
   image_mobile: PropTypes.string.isRequired,
   image_large: PropTypes.string.isRequired,
-});
+}
+
+const ingredientDataProp = PropTypes.shape(ingredientObject);
+
+const ingredientDataIndexedProp = PropTypes.shape({
+  ...ingredientObject,
+  itemId: PropTypes.string.isRequired,
+  itemOrder: PropTypes.number.isRequired
+})
+
+const scrollPosProp = PropTypes.shape({
+  top: PropTypes.number.isRequired,
+  left: PropTypes.number.isRequired
+})
 
 
-export { ingredientDataProp }
+export { ingredientDataProp, ingredientDataIndexedProp, scrollPosProp }

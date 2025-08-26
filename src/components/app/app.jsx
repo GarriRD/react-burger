@@ -1,9 +1,9 @@
 import AppHeader from "components/app-header/app-header";
 import AppMain from "components/app-main/app-main";
-import ErrorNotice from "components/error-notice/error-notice";
+import Notice from "components/notice/notice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getIngredients } from "store/ingredients/ingredients-slice";
+import { getIngredients } from "services/actions/ingredients-slice";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -23,10 +23,11 @@ const App = () => {
   }, [dispatch]);
 
 
-  let appMain = <></>
+  let appMain = <Notice type={'loading'} />
 
   if(!ingredientsLoad) {
-    appMain = ingredientsError ? <ErrorNotice /> : <AppMain/>;
+    console.log('error', ingredientsError);
+    appMain = ingredientsError ? <Notice type={'error'} /> : <AppMain/>;
   }
 
   return (
