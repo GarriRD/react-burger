@@ -1,28 +1,41 @@
-import { useMemo } from 'react';
-import PropTypes from 'prop-types';
+import { useDrop } from 'react-dnd';
 import burgerConstructorStyles from './burger-constructor.module.css';
 import SelectedItems from "./selected-items/selected-items";
 import Total from "./total/total";
-import { ingredientDataProp } from 'utils/props-types';
+import { useDispatch, useSelector } from 'react-redux';
+import selectedIngredientsSlice from 'services/actions/selected-ingredients-slice';
 
-const BurgerConstructor = ({ selectedData, changeCount }) => {
+const BurgerConstructor = () => {
+  const dispatch = useDispatch();
 
-  // добавил данных хук, т.к. обработчик событий в ConstructorElement постоянно форсил новые рендеры
-  const selectedItems = useMemo(() => {
-    return <SelectedItems selectedData={selectedData} changeCount={changeCount} />
-  }, [selectedData, changeCount]);
-  
+  const selectionLoaded = useSelector(store => store.selectedIngredients.selectionLoaded);
+  const highlight = useSelector(store => store.selectedIngredients.selectionHighlighted);
+  const { setBun, addSelectedItem } = selectedIngredientsSlice.actions;
+
+  const [, dropRef] = useDrop({
+    accept: 'ingredient',
+    drop(item) {
+      
+      const ingredientItem = item.ingredientData;
+      ingredientItem.type === 'bun'
+      ? dispatch(setBun(ingredientItem))
+      : dispatch(addSelectedItem(ingredientItem));
+    }
+  })
+
+  const borderClass = highlight ? burgerConstructorStyles.highlighted : ''
+
   return (
-    <section className={burgerConstructorStyles.section} >
-      {selectedItems}
-      <Total totalIngredientsData={selectedData} />
+    <section className={`${burgerConstructorStyles.section} ${borderClass}`} ref={dropRef}>
+      {selectionLoaded
+      ? <>
+          <SelectedItems />
+          <Total />
+        </>
+      : null
+      }
     </section>
   )
-}
-
-BurgerConstructor.propTypes = {
-  selectedData: PropTypes.arrayOf(ingredientDataProp).isRequired,
-  changeCount: PropTypes.func.isRequired,
 }
 
 export default BurgerConstructor;

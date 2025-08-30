@@ -1,16 +1,16 @@
+import { useSelector } from 'react-redux';
 import ingredientDetailsStyles from './ingredient-details.module.css';
 import textStyles from 'styles/text.module.css';
-import { ingredientDataProp } from "utils/props-types";
 
-const IngredientDetails = ({ ingredientData }) => {
+const IngredientDetails = () => {
+  const ingredientData = useSelector(store => store.shownIngredient.ingredientData);
+
   const details = {
     'Калории, ккал': ingredientData.calories,
     'Белки, г': ingredientData.proteins,
     'Жиры. г': ingredientData.fat,
     'Углеводы. г': ingredientData.carbohydrates,
   }
-
-  
 
   return (
     <div className={ingredientDetailsStyles.wrapper} >
@@ -33,10 +33,6 @@ const IngredientDetails = ({ ingredientData }) => {
       </ul>
     </div>
   );
-}
-
-IngredientDetails.propTypes = {
-  ingredientData: ingredientDataProp.isRequired,
 }
 
 export default IngredientDetails;

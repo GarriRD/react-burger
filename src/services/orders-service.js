@@ -10,6 +10,8 @@
   Возвращает идентификаторы ингредиентов и их кол-во
 */
 
+const orderIdUrl = 'https://norma.nomoreparties.space/api/orders';
+
 // Данные, на текущий момент, статичны. Функция служит как заготовка для будущих проектов
 // , которые потребуют динамичности
 const fetchPendingOrder  = () => {
@@ -75,4 +77,45 @@ const parseOrder = (ingredientsData, orderData) => {
 }
 
 
-export { fetchPendingOrder, parseOrder }; 
+const fetchOrderData = async (ingredientsData, abortSignal) => {
+  let ids = new Set(ingredientsData.map(item => item._id));
+  
+  ids = JSON.stringify({
+    ingredients: [...ids]
+  });
+  
+  const options = {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json'
+    },
+    body: ids,
+    signal: abortSignal
+  }
+
+
+  const data = fetch(orderIdUrl, options)
+  .then(res => {
+    if (res.ok) {
+      return res.json();
+    }
+
+    throw new Error('Ошибка при оформлении заказа, non ok response');
+  }).then(data => {
+
+    if(data.success) {
+      return data;
+    }
+
+    throw new Error('Ошибка при оформлении заказа, success status is false');
+  })
+  .catch(() => null);
+
+    
+
+  return data;
+};
+
+
+export { fetchPendingOrder, parseOrder, fetchOrderData }; 
+

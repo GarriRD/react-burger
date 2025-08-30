@@ -18,7 +18,7 @@ const getIngredientsDetails = async abortSignal => {
       return res.json();
     }
     
-    throw new Error('recieved non ok response');
+    throw new Error('Ошибка при получении данных ингредиентов, non ok response');
   })
   .then(data => data.data)
   .catch(() => []);

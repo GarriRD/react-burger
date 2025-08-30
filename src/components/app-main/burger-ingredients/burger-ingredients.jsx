@@ -1,17 +1,31 @@
-import { useMemo, useState } from "react";
-import PropTypes from 'prop-types';
+import { useMemo, useRef } from "react";
 import TabOptions from "./tab-options/tab-options";
 import IngredientSection from "./ingredient-section/ingredient-section";
 import burgerIngredientsStyles from './burger-ingredients.module.css';
-import { ingredientDataProp } from "utils/props-types";
+import {  useDispatch, useSelector } from "react-redux";
+import Modal from "components/modal/modal";
+import IngredientDetails from "./ingredient-details/ingredient-details";
+import shownIngredientSlice from "services/actions/shown-ingredient-slice";
 
-const BurgerIngredients = ({ data }) => {
-  const [current, setCurrent] = useState('bun');
+const BurgerIngredients = () => {
+  const dispatch = useDispatch();
+  const ingredientsData = useSelector(store => store.ingredients.ingredients);
+  
+  const { shownIngredientModalVisible } = useSelector(store => store.shownIngredient)
+  const { modalSwitch } = shownIngredientSlice.actions;
+  const sectionRef = useRef();
+  const scrollRef = useRef(null);
+  
+  const ingredientDetails = (shownIngredientModalVisible
+    && <Modal modalSwitcher={() => dispatch(modalSwitch())}>
+        <IngredientDetails />
+      </Modal>
+  )
 
-    const ingredientSections = useMemo(() => {
-    const buns = data.filter(item => item.type === 'bun');
-    const sauces = data.filter(item => item.type === 'sauce');
-    const mains = data.filter(item => item.type === 'main');
+  const ingredientSections = useMemo(() => {
+    const buns = ingredientsData.filter(item => item.type === 'bun');
+    const sauces = ingredientsData.filter(item => item.type === 'sauce');
+    const mains = ingredientsData.filter(item => item.type === 'main');
 
     const sections = [
       ['Булки', 'bun', buns],
@@ -20,34 +34,31 @@ const BurgerIngredients = ({ data }) => {
     ];
 
     return (
-      <section  className={burgerIngredientsStyles['ingredient-section-wrapper']}>
+      <section  className={burgerIngredientsStyles['ingredient-section-wrapper']} ref={sectionRef}>
         {sections.map((item, i) => {
 
 
           const sectionProps = {
-            setCurrent: setCurrent,
-            current: current,
             title: item[0],
             type: item[1],
-            ingredientsData: item[2]
+            ingredientsData: item[2],
+            sectionRef,
+            scrollRef
           };
 
           return <IngredientSection {...sectionProps} key={i} />  
         })}
       </section>
     );
-  }, [data, current]);
+  }, [ingredientsData]);
 
   return (
     <section className={burgerIngredientsStyles.section}>
-      <TabOptions current={current} setCurrent={setCurrent} />
+      {ingredientDetails}
+      <TabOptions scrollRef={scrollRef} />
       {ingredientSections}
     </section>
   );
-}
-
-BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(ingredientDataProp).isRequired,
 }
 
 export default BurgerIngredients;

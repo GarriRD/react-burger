@@ -1,47 +1,35 @@
 import AppHeader from "components/app-header/app-header";
 import AppMain from "components/app-main/app-main";
-import ErrorNotice from "components/error-notice/error-notice";
-import { useEffect, useState } from "react";
-import { getIngredientsDetails } from "services/ingredients-service";
-import { fetchPendingOrder, parseOrder } from "services/orders-service";
-
+import Notice from "components/notice/notice";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getIngredients } from "services/actions/ingredients-slice";
 
 const App = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [status, setStatus] = useState('success');
-  const [ingredientsData, setIngredientsData] = useState([]);
+  const dispatch = useDispatch();
+  const { ingredientsLoad, ingredientsError } = useSelector(store => store.ingredients);
+
 
   useEffect(() => {
     const abortController = new AbortController();
     const abortSignal = abortController.signal;
-
-    const loadIngredientsData = async () => {
-
-      const loadedIngredients = await getIngredientsDetails(abortSignal);
-      
-      const currentOrder = fetchPendingOrder();
-      const parsedIngredients = parseOrder(loadedIngredients, currentOrder);
-      
-      setIngredientsData(parsedIngredients.ingredientsData);
-      setIsLoading(false);
-      setStatus(parsedIngredients.status);
-    }
     
-    loadIngredientsData();
-
+    dispatch(getIngredients(abortSignal));
+    
     return () => {
       abortController.abort();
     }
     
-  }, []);
+  }, [dispatch]);
 
 
-  let appMain = <></>
+  let appMain = <Notice type={'loading'} />
 
-  if(!isLoading) {
-    appMain = status !== 'error' ? <AppMain ingredientsData={ingredientsData} /> : <ErrorNotice />;
+  if(!ingredientsLoad) {
+    console.log('error', ingredientsError);
+    appMain = ingredientsError ? <Notice type={'error'} /> : <AppMain/>;
   }
-  
+
   return (
     <>
       <AppHeader />

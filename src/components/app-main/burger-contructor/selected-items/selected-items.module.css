@@ -10,8 +10,11 @@
   display: flex;
   flex-direction: column;
   justify-content: start;
-  gap: 15px;
   overflow: auto;
+}
+
+.padded {
+  padding: 8px 0;
 }
 
 ul {
@@ -20,5 +23,6 @@ ul {
 }
 
 li {
-  list-style-type: none;
+  list-style-type: none; 
+  padding: 8px 0;
 }

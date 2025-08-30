@@ -5,12 +5,11 @@ import { createPortal } from "react-dom";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from 'prop-types';
 
-const Modal = ({ children, setIsVisible}) => {
-  
+const Modal = ({ children, modalSwitcher}) => {
   useEffect(() => {
     const handleEscPressed = e => {
       if (e.key === 'Escape') {
-        setIsVisible(false);
+        modalSwitcher();
       }
     }
 
@@ -25,14 +24,14 @@ const Modal = ({ children, setIsVisible}) => {
 
   return (
     createPortal(
-      <ModalOverlay setIsVisible={setIsVisible}>
+      <ModalOverlay modalSwitcher={modalSwitcher}>
         <span className={modalStyles.wrapper}>
           <span 
             className={`${modalStyles['close-btn']} text text_type_main-large`}
             onClick={e => {
               e.stopPropagation();
               
-              setIsVisible(false);
+              modalSwitcher();
             }}
           >
             <CloseIcon type={'primary'} />
@@ -48,7 +47,7 @@ const Modal = ({ children, setIsVisible}) => {
 
 Modal.propTypes = {
   children: PropTypes.element.isRequired,
-  setIsVisible: PropTypes.func.isRequired,
+  modalSwitcher: PropTypes.func.isRequired,
 }
 
 

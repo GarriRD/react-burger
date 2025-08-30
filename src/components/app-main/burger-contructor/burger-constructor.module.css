@@ -9,3 +9,8 @@
 li {
   list-style-type: none;
 }
+
+.highlighted {
+  box-shadow: 0 0 40px rgba(76, 76, 255, 0.7);
+  transition: box-shadow 0.15s ease-in;
+}
