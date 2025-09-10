@@ -1,25 +1,21 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getIngredientsDetails } from "services/ingredients-service";
-import { fetchPendingOrder, parseOrder } from "services/orders-service";
 import selectedIngredientsSlice from "services/actions/selected-ingredients-slice";
 
 const getIngredients = createAsyncThunk('ingredients/get',
   async (abortSignal, thunkApi) => {
+      
       const loadedIngredients = await getIngredientsDetails(abortSignal);
-
+      
       if (loadedIngredients.length === 0) {
 
         return thunkApi.rejectWithValue('Failed fetch ingredients')
       }
       
-      const currentOrder = fetchPendingOrder();
-      const parsedIngredients = parseOrder(loadedIngredients, currentOrder);
-
-      if (parsedIngredients.ingredientsStatus !== 'success') {
-        return thunkApi.rejectWithValue('Failed to parse pending order')
-      }
+      const parsedIngredients = loadedIngredients.map(item => ({...item, count: 0}) );
   
-      return parsedIngredients.ingredientsData
+      
+      return parsedIngredients
   }
 )
 
@@ -58,16 +54,15 @@ const ingredinetsSlice = createSlice({
       state.ingredientsError = false;
 
     }).addCase(getIngredients.fulfilled, (state, action) => {
-      
       state.ingredientsLoad = false;
       state.ingredientsError = false;
       state.ingredients = action.payload;
 
     }).addCase(getIngredients.rejected, state => {
-      
       state.ingredientsLoad = false;
       state.ingredientsError = true;
       state.ingredients = [];
+
     }).addCase(selectedIngredientsSlice.actions.setBun, (state, action) => {
       const buns = state.ingredients.filter(item => item.type === 'bun');
 
@@ -94,6 +89,31 @@ const ingredinetsSlice = createSlice({
         if(item._id === addeditem._id) {
           item.count = item.count + 1;
         }
+      });
+    }).addCase(selectedIngredientsSlice.actions.setFromState, (state, action) => {
+      const selection = action.payload.selectedIngredients.reduce((acc, item) => {
+        const itemCnt = acc[item._id];
+        if(!itemCnt) {
+          acc[item._id] = 1;
+          return acc;
+        }
+
+        acc[item._id] = itemCnt + 1;
+        return acc;
+      }, {});
+      if(!!action.payload.selectedBun) {
+        selection[action.payload.selectedBun._id] = 1;
+      }
+
+
+      state.ingredients = state.ingredients.map(item => {
+        const itemCnt = selection[item._id];
+
+        if(itemCnt) {
+          return {...item, count: itemCnt};
+        }
+
+        return {...item, count: 0};
       });
     })
   }

@@ -3,9 +3,7 @@ import { fetchOrderData } from "services/orders-service";
 
 const getOrderData = createAsyncThunk('order/getId', 
   async ({allIngredientsData, abortSignal}, thunkApi) => {
-    
     const orderData = await fetchOrderData(allIngredientsData, abortSignal);
-    
     if(!orderData) {
       return thunkApi.rejectWithValue('Пустое значение при запросе на обработку заказа');
     }

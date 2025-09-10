@@ -11,7 +11,7 @@ const ingredientsUrl = 'https://norma.nomoreparties.space/api/ingredients'
   Получить полный список ингредиентов
 */
 const getIngredientsDetails = async abortSignal => {
-  const data = fetch(ingredientsUrl, { signal: abortSignal })
+  const data = await fetch(ingredientsUrl, { signal: abortSignal })
   .then(res => {
   
     if(res.ok) {
@@ -22,7 +22,7 @@ const getIngredientsDetails = async abortSignal => {
   })
   .then(data => data.data)
   .catch(() => []);
-
+  
   return data
 }
 

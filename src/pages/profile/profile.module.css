@@ -1,0 +1,22 @@
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 50%;
+  margin-top: 13%;
+  margin-left: 10%;
+}
+
+.tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 4vh;
+}
+
+.tab {
+  text-decoration: none;
+}
+
+.tab:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}

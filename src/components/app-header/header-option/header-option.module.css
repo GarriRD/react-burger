@@ -5,3 +5,17 @@
   gap: 3%;
   white-space: nowrap;
 }
+
+.link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.active {
+  text-decoration: underline;
+}
+
+.link:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}

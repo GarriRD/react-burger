@@ -1,16 +1,18 @@
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientStyles from './ingredient.module.css';
 import { ingredientDataProp } from 'utils/props-types';
-import { useDispatch } from 'react-redux';
-import shownIngredientSlice from 'services/actions/shown-ingredient-slice';
+import { useDispatch, useSelector } from 'react-redux';
 import { useDrag } from 'react-dnd';
 import selectedIngredientsSlice from 'services/actions/selected-ingredients-slice';
+import { useNavigate } from 'react-router';
 
 const Ingredient = ({ ingredientData }) => {
   const dispatch = useDispatch();
-  const { setIngredientData, modalSwitch } = shownIngredientSlice.actions;
-  const { highlightSwitch } = selectedIngredientsSlice.actions;
+  const navigate = useNavigate();
 
+  const { highlightSwitch } = selectedIngredientsSlice.actions;
+  
+  
   const [, dragRef] = useDrag({
     type: 'ingredient',
     item: () => {
@@ -21,8 +23,11 @@ const Ingredient = ({ ingredientData }) => {
   })
 
   const showModal = () => {
-    dispatch(setIngredientData(ingredientData));
-    dispatch(modalSwitch());
+    navigate(`ingredients/${ingredientData._id}`, { 
+      state: {
+        modal: true,
+      } 
+    });
   }
 
   return ( 

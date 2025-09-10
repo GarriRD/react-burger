@@ -2,8 +2,9 @@
   display: flex;
   gap: 3%;
   margin: 5% auto;
-  justify-content: center;
+  justify-content:  start;
   align-items: start;
+  margin-left: 11%;
   height: 80vh;
 }
 
