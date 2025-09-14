@@ -1,4 +1,4 @@
-const BASE_URL = 'https://norma.nomoreparties.space/api/auth'
+const BASE_URL = 'https://norma.nomoreparties.space/api'
 
 
 const jsonHeaders = {
@@ -11,6 +11,7 @@ const fetchRequest = async (url, method, body, headers, abortSignal) => {
   const params = {
     signal: abortSignal,
   }
+  
   Object.entries({method, body, headers}).forEach(([key, value]) => {
     if(value) {
       params[key] = value;
@@ -40,7 +41,7 @@ const register = async (name, email, password, abortSignal) => {
 
   const method = 'POST';
 
-  return await fetchRequest('/register', method, body, jsonHeaders, abortSignal);
+  return await fetchRequest('/auth/register', method, body, jsonHeaders, abortSignal);
 };
 
 const login = async (email, password, abortSignal) => {
@@ -51,7 +52,7 @@ const login = async (email, password, abortSignal) => {
 
   const method = 'POST';
 
-  return await fetchRequest('/login', method, body, jsonHeaders, abortSignal);
+  return await fetchRequest('/auth/login', method, body, jsonHeaders, abortSignal);
 };
 
 const forgotPasswordCode = async (email, abortSignal) => {
@@ -91,7 +92,7 @@ const renewToken = async (token, abortSignal) => {
 
   const method = 'POST';
 
-  return await fetchRequest('/token', method, body, jsonHeaders, abortSignal);
+  return await fetchRequest('/auth/token', method, body, jsonHeaders, abortSignal);
 };
 
 
@@ -102,7 +103,7 @@ const fetchUser = async (token, abortSignal) => {
 
   const method = 'GET';
 
-  return await fetchRequest('/user', method, null, headers, abortSignal);
+  return await fetchRequest('/auth/user', method, null, headers, abortSignal);
 };
 
 
@@ -116,7 +117,7 @@ const patchUser = async (token, userForm, abortSignal) => {
 
   const method = 'PATCH';
 
-  const res = await fetchRequest('/user', method, body, headers, abortSignal);
+  const res = await fetchRequest('/auth/user', method, body, headers, abortSignal);
   return res;
 };
 
@@ -125,7 +126,7 @@ const logout = async (token, abortSignal) => {
 
   const method = 'POST';
 
-  return await fetchRequest('/logout', method, body, jsonHeaders, abortSignal);
+  return await fetchRequest('/auth/logout', method, body, jsonHeaders, abortSignal);
 }
 
 
