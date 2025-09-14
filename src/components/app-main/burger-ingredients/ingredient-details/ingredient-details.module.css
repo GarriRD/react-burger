@@ -44,3 +44,7 @@
 .name {
   font-size: 1.5rem;
 }
+
+.margin2 {
+  margin: 0 2vw;
+}

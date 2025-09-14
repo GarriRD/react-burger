@@ -1,7 +1,7 @@
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientStyles from './ingredient.module.css';
 import { ingredientDataProp } from 'utils/props-types';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useDrag } from 'react-dnd';
 import selectedIngredientsSlice from 'services/actions/selected-ingredients-slice';
 import { useNavigate } from 'react-router';

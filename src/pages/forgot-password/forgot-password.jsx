@@ -7,7 +7,7 @@ import { setCookie } from "services/utils";
 import { handleFormInput, useFormState } from "services/form-page";
 
 const ForgotPassword = () => {
-  const [formState, setFormState] = useFormState();
+  const [formState, setFormState] = useFormState({ email: ''});
   const navigate = useNavigate();
 
 
@@ -46,9 +46,9 @@ const ForgotPassword = () => {
   return (
     <form className="form-page" onChange={handleInput} onSubmit={handleSend}>
       <span className="text text_type_main-large">Восстановление пароля</span>
-      {formState.error && <span className="text text_type_main-small" style={{color: 'red'}}>{formState.error}</span>}
-      <Input placeholder={!formState.form.email && 'Укажите E-mail'} text='text' name='email' />
-      <Button type='primary' size="large" disabled={formState.sending} >Восстановить</Button>
+      {formState.error && <span className="text text_type_main-small error-msg">{formState.error}</span>}
+      <Input placeholder={!formState.form.email ? 'Укажите E-mail' : ''} text='text' name='email' value={formState.form.email}/>
+      <Button type='primary' size="large" disabled={formState.sending} htmlType="submit" >Восстановить</Button>
       <span className={`${forgotPasswordStyles.footer} form-link`}>
         <span className="text text_type_main-default">Вспомнили пароль?</span>
         <Link to='/login'>Войти</Link>

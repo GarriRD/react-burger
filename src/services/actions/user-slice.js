@@ -11,18 +11,16 @@ const tokenThunk = async (abortSignal, thunkApi) => {
     const refreshToken = getCookie('refreshToken');
     
     if(!refreshToken) {
-      return { success: false, payload: thunkApi.rejectWithValue('Необходима авторизация') };
+      return { success: false, payload: 'Необходима авторизация' };
     }
     
-    const newToken = renewToken(refreshToken, abortSignal);
-
+    const newToken = await renewToken(refreshToken, abortSignal);
     if(!newToken.success) {
-      return { success: false, payload: thunkApi.rejectWithValue('Необходима авторизация') };
+      return { success: false, payload: 'Необходима авторизация' };
     }
-
-    setCookie(newToken.token, { expires: 20 * 60 });
-    setCookie(newToken.refreshToken, { expires: 24 * 60 * 60 });
-    token = newToken.token;
+    setCookie('token', newToken.accessToken, { expires: 20 * 60 });
+    setCookie('refreshToken', newToken.refreshToken, { expires: 24 * 60 * 60 });
+    token = newToken.accessToken;
   }
 
   return {success: true, payload: token};
@@ -30,10 +28,11 @@ const tokenThunk = async (abortSignal, thunkApi) => {
 
 const getUser = createAsyncThunk('user/get', 
   async (abortSignal, thunkApi) => {
+    
     let token = await tokenThunk(abortSignal, thunkApi);
-
+    
     if(!token.success) {
-      return token.payload;
+      return thunkApi.rejectWithValue(token.payload);
     }
 
     const user = await fetchUser(token.payload, abortSignal);

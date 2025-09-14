@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getIngredients } from "services/actions/ingredients-slice";
+import { getOrderData } from "./order-slice";
 
 
 const ingredientToArray = (item, count) => {
@@ -111,7 +112,13 @@ const selectedIngredientsSlice = createSlice({
     }
   },
   extraReducers: builder => {
-    builder.addCase(getIngredients.fulfilled, setOrder)
+    builder
+    .addCase(getIngredients.fulfilled, setOrder)
+    .addCase(getOrderData.fulfilled, state => {
+      state.selectedBun = null;
+      state.selectedIngredients = [];
+      sessionStorage.removeItem('constructorState');
+    })
   }
   
 });

@@ -1,6 +1,6 @@
 import textStyles from 'styles/text.module.css';
 import profileStyles from './profile.module.css';
-import { NavLink, useNavigate } from 'react-router';
+import { NavLink } from 'react-router';
 import { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import authSlice from 'services/actions/auth-slice';
@@ -27,11 +27,10 @@ const Profile = ({ children }) => {
   const tabClass = useMemo(() => `text text_type_main-medium ${profileStyles.tab}`, []);
 
   const handleLogout = () => {
-    // для выхода устанавливается флаг который предотвратит возвращение в профиль после повторного логина
-    sessionStorage.setItem('stateless', '1');
+    sessionStorage.setItem('logout', '1');
     dispatch(authSlice.actions.logout());
   }
-
+  
   return (
     <div className={profileStyles.wrapper}>
       <div className={profileStyles.tabs}>

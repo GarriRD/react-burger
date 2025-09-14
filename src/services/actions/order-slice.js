@@ -35,7 +35,6 @@ const orderSlice = createSlice({
       state.orderLoad = false;
       state.orderError = false;
       state.orderId = action.payload.order.number;
-      
     }).addCase(getOrderData.rejected, state => {
       state.orderLoad = false;
       state.orderError = true;

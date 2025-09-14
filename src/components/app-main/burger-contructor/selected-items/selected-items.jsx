@@ -1,7 +1,7 @@
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import selectedItemsSTyles from './selected-items.module.css';
+import textStyles from 'styles/text.module.css';
 import { useSelector } from "react-redux";
-import { useCallback, useLayoutEffect } from "react";
 import IngredientItem from "./ingredient-item/ingredient-item";
 
 const SelectedItems = () => {
@@ -18,6 +18,9 @@ const SelectedItems = () => {
   return (
       <section className={selectedItemsSTyles.section}>
         <ul className={selectedItemsSTyles.selection}>
+          {!selectedBun && <li className={`text text_type_main-small ${selectedItemsSTyles.notice} ${textStyles.secondary}`}>
+            Пожалуйста, выберите булку
+          </li>}
           <li key={-1} className={selectedItemsSTyles.padded}>
             {selectedBun && <ConstructorElement 
               isLocked={true} 

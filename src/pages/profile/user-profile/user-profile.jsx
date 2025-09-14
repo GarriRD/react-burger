@@ -17,7 +17,7 @@ const UserProfile = () => {
   const dispatch = useDispatch();
 
   const { user, refreshing, refreshError } = useSelector(store => store.user);
-  const [formState, setFormState] = useFormState();
+  const [formState, setFormState] = useFormState({ name: '', email: '', password: ''});
   const [formChanged, setFormChanged] = useState(false);
   const [inputsState, setInputState] = useState({
     name: true,
@@ -29,8 +29,9 @@ const UserProfile = () => {
     if(!formChanged) {
       setFormChanged(true);
     }
-    if(!(inputsState.password && e.target.name === 'password'))
-    handleFormInput(e, formState, setFormState);
+    if(!(inputsState.password && e.target.name === 'password')) {
+      handleFormInput(e, formState, setFormState);
+    }
   };
 
   const handleIconClick = name => {
@@ -72,38 +73,38 @@ const UserProfile = () => {
   }
 
   return (
-    <form className={userProfileStyles.wrapper} onChange={handleInput} onSubmit={handleSave}>
-      {refreshError && <span className="text text_type_main-small" style={{color: 'red'}}>{refreshError}</span>}
+    <form className={userProfileStyles.wrapper} onChange={handleInput} onSubmit={handleSave} onReset={handleCancel}>
+      {refreshError && <span className="text text_type_main-small error-msg" >{refreshError}</span>}
       <Input 
         placeholder='Имя' 
-        text='text' 
         name='name' 
         icon="EditIcon" 
         value={formState.form.name} 
         disabled={inputsState.name}
         onIconClick={() => handleIconClick('name')}
+        defaultValue={user.name}
       />
       <Input 
         placeholder='Логин' 
-        text='text' 
         name='email' 
         icon="EditIcon"
         value={formState.form.email} 
         disabled={inputsState.email}
         onIconClick={() => handleIconClick('email')}
+        defaultValue={user.email}
       />
       <PasswordInput
         placeholder='Пароль' 
-        text='text'
         name='password' 
         value={inputsState.password ? '******' : formState.form.password}
         icon="EditIcon"
         disabled={inputsState.password}
         onIconClick={() => handleIconClick('password')}
+        defaultValue={''}
       />
       {formChanged &&<div className={userProfileStyles.buttons}>
-        <Button type="primary" >Сохранить</Button>
-        <Button onClick={handleCancel}>Отмена</Button>
+        <Button type="primary" htmlType="submit">Сохранить</Button>
+        <Button type='primary' htmlType="reset">Отмена</Button>
       </div>}
     </form>
   );

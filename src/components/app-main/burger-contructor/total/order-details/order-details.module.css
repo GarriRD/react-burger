@@ -19,3 +19,12 @@
   background-color: rgb(65, 64, 64);
   padding: 3%;
 }
+
+.loader {
+  display: flex;
+  gap: 1%;
+  padding: 5%;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}

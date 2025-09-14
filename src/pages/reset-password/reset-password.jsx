@@ -7,7 +7,7 @@ import { deleteCookie, getCookie } from "services/utils";
 import { handleFormInput, useFormState } from "services/form-page";
 
 const ResetPassword = () => {
-  const [formState, setFormState] = useFormState();
+  const [formState, setFormState] = useFormState({ password: '', token: '' });
   const navigate = useNavigate();
   const resetFlag = getCookie('reset-flag');
   
@@ -49,10 +49,10 @@ const ResetPassword = () => {
   return (  
     <form className="form-page" onChange={handleInput} onSubmit={handleSave}>
       <span className="text text_type_main-large">Восстановление пароля</span>
-      {formState.error && <span className="text text_type_main-small" style={{color: 'red'}}>{formState.error}</span>}
-      <PasswordInput placeholder={!formState.form.password && 'Введите новый пароль'} text='text' name='password' />
-      <Input placeholder={!formState.form.token && 'Введите код из письма'} text='text' name='token' />
-      <Button type='primary' size="large" disabled={formState.sending} >Сохранить</Button>
+      {formState.error && <span className="text text_type_main-small error-msg">{formState.error}</span>}
+      <PasswordInput placeholder={!formState.form.password ? 'Введите новый пароль' : ''} text='text' name='password' value={formState.form.password} />
+      <Input placeholder={!formState.form.token ? 'Введите код из письма' : ''} text='text' name='token' value={formState.form.token} />
+      <Button htmlType="submit" type='primary' size="large" disabled={formState.sending} >Сохранить</Button>
       <span className={`${resetPasswordStyles.footer} form-link`}>
         <span className="text text_type_main-default">Вспомнили пароль?</span>
         <Link to='/login'>Войти</Link>

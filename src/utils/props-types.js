@@ -23,8 +23,8 @@ const ingredientDataIndexedProp = PropTypes.shape({
 })
 
 const scrollPosProp = PropTypes.shape({
-  top: PropTypes.number.isRequired,
-  left: PropTypes.number.isRequired
+  top: PropTypes.number,
+  left: PropTypes.number
 })
 
 

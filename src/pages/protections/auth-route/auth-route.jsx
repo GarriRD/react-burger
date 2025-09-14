@@ -1,44 +1,47 @@
-import {  useLayoutEffect, useRef } from "react";
+import {  useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux"
-import { Navigate, useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { getUser } from "services/actions/user-slice";
-import { getCookie } from "services/utils";
+import { deleteCookie, getCookie } from "services/utils";
 import PropTypes from "prop-types";
+import Notice from "components/notice/notice";
 import authSlice from "services/actions/auth-slice";
 
 const AuthRoute = ({ children }) => {
   const { sending, loginError } = useSelector(store => store.auth);
+  const [logged, setLogged] = useState(false);
   const { user } = useSelector(store => store.user);
   const dispatch = useDispatch();
-  const controllerRef = useRef(new AbortController());
   const location = useLocation();
+  const navigate = useNavigate();
 
-  useLayoutEffect(() => {
-    const controller = controllerRef.current;
-
-    return () => {
-      dispatch(authSlice.actions.resetSending());
-      controller.abort();
-    }
-  }, [dispatch]);
-  
-  if(!!loginError) {
-    return <Navigate to='/login' state={{path: location.pathname}} replace />;
-  }
-
-  let element = children;
-
-  if(!getCookie('token') || !user) {
-    element = <span>Загрузка...</span>;
+  useEffect(() => {
     
-    if(!sending) {
-      dispatch(getUser(controllerRef.current.signal));
+    if(!!sessionStorage.getItem('logout')) {
+      sessionStorage.removeItem('logout');
+      navigate('/login');
+    } else if(!getCookie('token') || !user) {
+      if(!!loginError) {
+        deleteCookie('token');
+        deleteCookie('refreshToken');
+        navigate('/login', { state: { path: location.pathname } });
+        
+      } else if(!sending) {
+        dispatch(authSlice.actions.setSending(true));
+        dispatch(getUser());
+      }
+    } else {
+      setLogged(true);
     }
-  }
+    
+  }, [sending, loginError, user, navigate, dispatch, location.pathname]);
   
   return (
     <>
-      {element}
+      {!sessionStorage.getItem('logout') && logged 
+        ? <>{children}</>
+        : <Notice type='loading' />
+      }
     </>
   )
 };

@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getIngredientsDetails } from "services/ingredients-service";
 import selectedIngredientsSlice from "services/actions/selected-ingredients-slice";
+import { getOrderData } from "./order-slice";
 
 const getIngredients = createAsyncThunk('ingredients/get',
   async (abortSignal, thunkApi) => {
-      
       const loadedIngredients = await getIngredientsDetails(abortSignal);
       
       if (loadedIngredients.length === 0) {
@@ -115,6 +115,10 @@ const ingredinetsSlice = createSlice({
 
         return {...item, count: 0};
       });
+    }).addCase(getOrderData.fulfilled, state => {
+      state.ingredients.forEach(item => {
+        item.count = 0;
+      })
     })
   }
 });

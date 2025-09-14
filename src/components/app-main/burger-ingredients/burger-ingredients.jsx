@@ -3,26 +3,16 @@ import TabOptions from "./tab-options/tab-options";
 import IngredientSection from "./ingredient-section/ingredient-section";
 import burgerIngredientsStyles from './burger-ingredients.module.css';
 import {  useDispatch, useSelector } from "react-redux";
-import Modal from "components/modal/modal";
-import IngredientDetails from "./ingredient-details/ingredient-details";
-import { useLocation, useNavigate, useParams } from "react-router";
 import selectedIngredientsSlice from "services/actions/selected-ingredients-slice";
+import { Outlet } from "react-router";
 
 const BurgerIngredients = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const ingredientsData = useSelector(store => store.ingredients.ingredients);
   const sectionRef = useRef();
   const scrollRef = useRef(null);
-  const { id } = useParams();
-  const { state } = useLocation();
-  
-  const ingredientDetails = (id
-    && <Modal modalSwitcher={() => navigate('/')}>
-        <IngredientDetails id={id} />
-      </Modal>
-  )
+
 
   const ingredientSections = useMemo(() => {
     const buns = ingredientsData.filter(item => item.type === 'bun');
@@ -66,8 +56,8 @@ const BurgerIngredients = () => {
 
   return (
     <section className={burgerIngredientsStyles.section}>
-      {ingredientDetails}
-        <TabOptions scrollRef={scrollRef} />
+      <Outlet />
+      <TabOptions scrollRef={scrollRef} />
       {ingredientSections}
     </section>
   );

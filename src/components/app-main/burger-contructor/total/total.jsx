@@ -1,13 +1,14 @@
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import totalStyles from './total.module.css';
-import { useLayoutEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import OrderDetails from './order-details/order-details';
 import Modal from 'components/modal/modal';
 import { useDispatch, useSelector } from 'react-redux';
 import orderSlice, { getOrderData } from 'services/actions/order-slice';
 import { useNavigate } from 'react-router';
-import { getCookie } from 'services/utils';
-import { getUser } from 'services/actions/user-slice';
+import { getCookie, setCookie } from 'services/utils';
+import { renewToken } from 'services/auth';
+import { Oval } from 'react-loader-spinner';
 
 const Total = () => {
   const dispatch = useDispatch();
@@ -16,11 +17,10 @@ const Total = () => {
   const bunData = useSelector(store => store.selectedIngredients.selectedBun);
   const ingredientsData = useSelector(store => store.selectedIngredients.selectedIngredients);
   const orderModalVisible = useSelector(store => store.order.orderModalVisible);
-  const [emptyError, setEmptyError] = useState(false);
-  const controller = useMemo(() => new AbortController());
+  const [sending, setSending] = useState(false);
   
   const { modalSwitch } = orderSlice.actions;
-
+  
   const total = useMemo(() => {
     let bunPrice = 0;
     if(!!bunData) {
@@ -33,55 +33,64 @@ const Total = () => {
     dispatch(modalSwitch());
   };
 
-  useLayoutEffect(() => {
-    return () => {
-      controller.abort();
-    }
-  }, [controller])
-
 
   const orderDetails = (orderModalVisible 
     && <Modal modalSwitcher={modalSwitcher}>
         <OrderDetails/>
       </Modal>
   )
+
+  const dispachOrder = (bun, ingredients) => {
+    const allIngredients = [bun]
+  
+    if(ingredients.length > 0) {
+      allIngredients.push(...ingredientsData);
+    }
+    
+    dispatch(getOrderData({ allIngredientsData: [...allIngredients] }));
+    dispatch(modalSwitch());  
+  }
   
   const loadOrder = () => {
-    if(!!getCookie('refreshToken')){
-      if(!getCookie('token')) {
-        setEmptyError(false);
-        dispatch(getUser(controller.signal));
-      } else if(ingredientsData.length === 0 && !bunData) {
-        setEmptyError(true);
-      } else {
-        
-        const allIngredients = []
+    const action = async () => {
 
-        if(ingredientsData.length > 0) {
-          allIngredients.push(...ingredientsData);
-        }
-
-        if(!!bunData) {
-          allIngredients.push(bunData);
-        }
-        setEmptyError(false);
-        dispatch(getOrderData({ allIngredientsData: [...allIngredients] }));
-        dispatch(modalSwitch());
-      }
-
+      if(!!getCookie('refreshToken')) {
+        if (!getCookie('token')) {
+            const newToken = await renewToken(getCookie('refreshToken'));
+            
+            if(newToken.success) {
+              
+              setCookie('token', newToken.accessToken, { expires: 20 * 60 });
+              setCookie('refreshToken', newToken.refreshToken, { expires: 24 * 60 * 60 });
       
-    } else {
-      navigate('/login')
-    }
+              dispachOrder(bunData, ingredientsData);
+              
+            } else {
+              navigate('/');
+            }
+            
+        } else {
+          dispachOrder(bunData, ingredientsData);
+        }
+        
+      } else {
+        navigate('/login')
+      }
+      setSending(false);
+    };
+
+    setSending(true);
+    action()
+    
   }
 
   return (
     <span className={totalStyles.wrapper}>
       {orderDetails}
-      {emptyError && <span className='text text_type_main-small' style={{color: 'red'}}>Заказ не может быть пустым</span>}
       <span className='text text_type_main-large'>{total}</span>
       <CurrencyIcon type='primary' />
-      <Button htmlType="button" type="primary" size="large" onClick={loadOrder}>Оформить</Button>
+      {sending && <Oval color='silver' secondaryColor='grey' width={40} height={40} /> }
+      <Button htmlType="button" type="primary" size="large" onClick={loadOrder} disabled={!bunData || sending}>Оформить</Button>
     </span>
   );
 }

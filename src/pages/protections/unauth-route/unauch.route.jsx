@@ -3,10 +3,10 @@ import { getCookie } from "services/utils"
 import PropTypes from "prop-types";
 
 const UnauthRoute = ({ children }) => {
-  if(!!getCookie('token') || !!getCookie('refreshToekn')) {
+  if(!!getCookie('token') || !!getCookie('refreshToken')) {
     return <Navigate to='/' replace />
   }
-
+  
   return (
     <>
       {children}

@@ -9,7 +9,7 @@ const IngredientDetails = ({ id, standAlone = false }) => {
   const ingredient = ingredients.filter(item => item._id === id);
   
   if(ingredient.length === 0) {
-    return <span style={{margin: '0 2vw'}}><Notice type={'error'} /></span>
+    return <span className={ingredientDetailsStyles.margin2}><Notice type={'error'} /></span>
   }
   
   const ingredientData = ingredient[0];

@@ -2,8 +2,15 @@ import { Logo } from '@ya.praktikum/react-developer-burger-ui-components'
 import appHeaderStyles from './app-header.module.css';
 import HeaderOption from './header-option/header-option.jsx';
 import { useNavigate } from 'react-router';
+import { useCallback } from 'react';
 
 const AppHeader = () => {
+  const navigate = useNavigate();
+  
+  const handleClick = useCallback(() => {
+    navigate('/');
+  }, [navigate]);
+
   return (
     
     <header className={appHeaderStyles.header}>
@@ -23,7 +30,7 @@ const AppHeader = () => {
           path={'/profile/orders'}
         />
       </nav>
-      <div className={appHeaderStyles['flex-wrap']}>
+      <div className={`${appHeaderStyles['flex-wrap']} ${appHeaderStyles.selectable}`} onClick={handleClick}>
         <Logo />
       </div>
       <nav className={appHeaderStyles['right-sided']}>

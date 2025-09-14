@@ -3,7 +3,6 @@ import tabOptionsStyles from './tab-options.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCallback } from 'react';
 import ingredinetsSlice from 'services/actions/ingredients-slice';
-import PropTypes from 'prop-types';
 import { scrollPosProp } from 'utils/props-types';
 
 const TabOptions = ({scrollRef}) => {
@@ -28,10 +27,7 @@ const TabOptions = ({scrollRef}) => {
 }
 
 TabOptions.propTypes = {
-  scrollRef: PropTypes.oneOfType([
-    PropTypes.func,
-    scrollPosProp
-  ]).isRequired
+  scrollRef: scrollPosProp
 }
 
 export default TabOptions;

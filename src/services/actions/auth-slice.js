@@ -24,12 +24,23 @@ const authSlice = createSlice({
       state.logged = false;
       state.loginError = false;
       state.sending = false;
+
+      return state;
     },
     resetSending: state => {
       state.loginError = null
       state.sending = false
-    }
 
+      return state;
+    },
+    setLoginError: (state, action) => {
+      state.loginError = action.payload;
+
+      return state;
+    },
+    setSending: (state, action) => {
+      state.sending = action.payload;
+    }
   },
   extraReducers: builder => {
     builder.addCase(getUser.pending, state => {
@@ -40,6 +51,7 @@ const authSlice = createSlice({
     }).addCase(getUser.fulfilled, state => {
       state.logged = true;
       state.sending = false;
+      state.loginError = null;
 
     }).addCase(getUser.rejected, (state, action) => {
       state.logged = false;

@@ -8,11 +8,11 @@ import { handleFormInput, useFormState } from "services/form-page";
 import { setCookie } from "services/utils";
 
 const Login = () => {
-  const [formState, setFormState] = useFormState(); 
+  const [formState, setFormState] = useFormState({ email: '', password: ''}); 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
-  
+
   const handleLogin = e => {
     e.preventDefault();
     const action = async () => {
@@ -26,9 +26,8 @@ const Login = () => {
         const user = await fetchUser(res.accessToken, formState.signalRef.current);
 
         if(user.success) {
-          const path = location.state && location.state.path && !sessionStorage ?  location.state.path : '/'
+          const path = location.state && location.state.path ?  location.state.path : '/'
           
-          sessionStorage.removeItem('stateless');
           dispatch(userSlice.actions.setUser(user.user));
           navigate(path, { replace: true });
         } 
@@ -60,10 +59,10 @@ const Login = () => {
   return (
     <form className='form-page' onSubmit={handleLogin} onChange={handleInput}>
       <span className="text text_type_main-large">Вход</span>
-      {formState.error && <span className="text text_type_main-small" style={{color: 'red'}}>{formState.error}</span>}
-      <Input placeholder={!formState.form.email && 'E-mail'} text='text' name='email'/>
-      <PasswordInput name='password' placeholder={!formState.form.password && 'Пароль'} />
-      <Button type='primary' size="large" disabled={formState.sending}>Войти</Button>
+      {formState.error && <span className="text text_type_main-small error-msg">{formState.error}</span>}
+      <Input placeholder={!formState.form.email ? 'E-mail' : ''} text='text' name='email' value={formState.form.email} />
+      <PasswordInput name='password' placeholder={!formState.form.password ? 'Пароль' : ''} value={formState.form.password} />
+      <Button htmlType="submit" type='primary' size="large" disabled={formState.sending}>Войти</Button>
       <span className='form-link'>
         Вы — новый пользователь?
         <Link to='/register'>Зарегистрироваться</Link>

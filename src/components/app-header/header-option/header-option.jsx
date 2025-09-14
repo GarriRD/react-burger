@@ -2,7 +2,7 @@ import { BurgerIcon, ProfileIcon, ListIcon } from "@ya.praktikum/react-developer
 import headerOptionStyles from './header-option.module.css';
 import textStyles from '../../../styles/text.module.css';
 import PropTypes from 'prop-types';
-import { Link, NavLink } from "react-router";
+import { NavLink } from "react-router";
 
 const iconTypeGetter = {
   'burger': BurgerIcon,
@@ -15,13 +15,13 @@ const HeaderOption = ({ iconAlias, text, path, iconType = 'primary', textType = 
   
   return (
     <span className={headerOptionStyles['header-option']}>
-      <HeaderIcon type={iconType}/>
-      <NavLink to={path} end>
+      <HeaderIcon type={iconType} />
+      <NavLink to={path} end className={headerOptionStyles.link}>
         {({isActive}) => {
           const activeClass = isActive ? headerOptionStyles.active : ''
           return (
             <span className={`text text_type_main-default ${textStyles[textType]} ${activeClass}`}>
-              <Link to={path} className={`${headerOptionStyles.link}`}>{text}</Link>
+              {text}
             </span>
           );
         }}

@@ -1,10 +1,4 @@
-const registerLink = 'https://norma.nomoreparties.space/api/auth/register'
-const loginLink = 'https://norma.nomoreparties.space/api/auth/login'
-const passwordCodeLink = 'https://norma.nomoreparties.space/api/password-reset'
-const passwordResetLink = 'https://norma.nomoreparties.space/api/password-reset/reset'
-const tokenLink = 'https://norma.nomoreparties.space/api/auth/token'
-const userLink = 'https://norma.nomoreparties.space/api/auth/user'
-const logoutLink = 'https://norma.nomoreparties.space/api/auth/logout'
+const BASE_URL = 'https://norma.nomoreparties.space/api/auth'
 
 
 const jsonHeaders = {
@@ -13,6 +7,7 @@ const jsonHeaders = {
 
 
 const fetchRequest = async (url, method, body, headers, abortSignal) => {
+  const urlLink = `${BASE_URL}${url}`
   const params = {
     signal: abortSignal,
   }
@@ -23,7 +18,7 @@ const fetchRequest = async (url, method, body, headers, abortSignal) => {
 
   })
   
-  const data =  await fetch(url, params)
+  const data =  await fetch(urlLink, params)
   // Без проверки res.ok т.к. сервер возвращает 4** статус при принятом запросе, но неудачной его обработке вместе
   // с причиной в теле ответа
   .then(res => res.json())
@@ -31,7 +26,7 @@ const fetchRequest = async (url, method, body, headers, abortSignal) => {
   .catch(e => ({
     success: false, message: e.message
   }));
-
+  
   return data;
 }
 
@@ -45,7 +40,7 @@ const register = async (name, email, password, abortSignal) => {
 
   const method = 'POST';
 
-  return await fetchRequest(registerLink, method, body, jsonHeaders, abortSignal);
+  return await fetchRequest('/register', method, body, jsonHeaders, abortSignal);
 };
 
 const login = async (email, password, abortSignal) => {
@@ -56,7 +51,7 @@ const login = async (email, password, abortSignal) => {
 
   const method = 'POST';
 
-  return await fetchRequest(loginLink, method, body, jsonHeaders, abortSignal);
+  return await fetchRequest('/login', method, body, jsonHeaders, abortSignal);
 };
 
 const forgotPasswordCode = async (email, abortSignal) => {
@@ -67,7 +62,7 @@ const forgotPasswordCode = async (email, abortSignal) => {
 
   const method = 'POST';
 
-  return await fetchRequest(passwordCodeLink, method, body, jsonHeaders, abortSignal);
+  return await fetchRequest('/password-reset', method, body, jsonHeaders, abortSignal);
 };
 
 
@@ -79,7 +74,7 @@ const passwordReset = async (password, token, abortSignal) => {
 
   const method = 'POST';
 
-  const res =  await fetchRequest(passwordResetLink, method, body, jsonHeaders, abortSignal);
+  const res =  await fetchRequest('/password-reset/reset', method, body, jsonHeaders, abortSignal);
 
   if(!res.success) {
 
@@ -96,7 +91,7 @@ const renewToken = async (token, abortSignal) => {
 
   const method = 'POST';
 
-  return await fetchRequest(tokenLink, method, body, jsonHeaders, abortSignal);
+  return await fetchRequest('/token', method, body, jsonHeaders, abortSignal);
 };
 
 
@@ -107,7 +102,7 @@ const fetchUser = async (token, abortSignal) => {
 
   const method = 'GET';
 
-  return await fetchRequest(userLink, method, null, headers, abortSignal);
+  return await fetchRequest('/user', method, null, headers, abortSignal);
 };
 
 
@@ -121,7 +116,7 @@ const patchUser = async (token, userForm, abortSignal) => {
 
   const method = 'PATCH';
 
-  const res = await fetchRequest(userLink, method, body, headers, abortSignal);
+  const res = await fetchRequest('/user', method, body, headers, abortSignal);
   return res;
 };
 
@@ -130,7 +125,7 @@ const logout = async (token, abortSignal) => {
 
   const method = 'POST';
 
-  return await fetchRequest(logoutLink, method, body, jsonHeaders, abortSignal);
+  return await fetchRequest('/logout', method, body, jsonHeaders, abortSignal);
 }
 
 
