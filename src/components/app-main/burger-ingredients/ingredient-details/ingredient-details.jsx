@@ -1,9 +1,18 @@
 import { useSelector } from 'react-redux';
 import ingredientDetailsStyles from './ingredient-details.module.css';
 import textStyles from 'styles/text.module.css';
+import Notice from 'components/notice/notice';
+import PropTypes from 'prop-types';
 
-const IngredientDetails = () => {
-  const ingredientData = useSelector(store => store.shownIngredient.ingredientData);
+const IngredientDetails = ({ id, standAlone = false }) => {
+  const ingredients = useSelector(store => store.ingredients.ingredients);
+  const ingredient = ingredients.filter(item => item._id === id);
+  
+  if(ingredient.length === 0) {
+    return <span className={ingredientDetailsStyles.margin2}><Notice type={'error'} /></span>
+  }
+  
+  const ingredientData = ingredient[0];
 
   const details = {
     'Калории, ккал': ingredientData.calories,
@@ -12,9 +21,10 @@ const IngredientDetails = () => {
     'Углеводы. г': ingredientData.carbohydrates,
   }
 
+  const headerClass = standAlone ? ingredientDetailsStyles['header-center'] : ingredientDetailsStyles['header-left']
   return (
     <div className={ingredientDetailsStyles.wrapper} >
-      <span className={`text text_type_main-large ${ingredientDetailsStyles.header}`}>Детали ингредиента</span>
+      <span className={`text text_type_main-large ${headerClass}`}>Детали ингредиента</span>
       <span className={ingredientDetailsStyles.preview} >
         <img src={ingredientData.image_large} alt={`ingredient ${ingredientData.name}`} />
       </span>
@@ -33,6 +43,11 @@ const IngredientDetails = () => {
       </ul>
     </div>
   );
+}
+
+IngredientDetails.propTypes = {
+  id: PropTypes.string.isRequired,
+  standAlone: PropTypes.bool,
 }
 
 export default IngredientDetails;

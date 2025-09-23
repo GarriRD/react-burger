@@ -2,6 +2,7 @@ import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-component
 import orderDetailsStyles from './order-details.module.css';
 import textStyles from 'styles/text.module.css';
 import { useSelector } from "react-redux";
+import { Oval } from "react-loader-spinner";
 
 const OrderDetails = () => {
   const { orderLoad, orderError, orderId } = useSelector(store => store.order);
@@ -9,7 +10,10 @@ const OrderDetails = () => {
   return (
     <span className={orderDetailsStyles.wrapper}>
       {orderLoad
-      ? <span className={'text text_type_main-default'}>Оформляем заказ...</span>
+      ? <span className={`text text_type_main-default ${orderDetailsStyles.loader}`}>
+          <Oval color='silver' secondaryColor='grey' height={50} width={70} />
+          Оформляем заказ...
+        </span>
       : orderError
       ? <span className={'text text_type_main-default'}>
           Ошибка при оформлении заказа. Пожалуйста, попробуйте снова или обратитесь в поддержку

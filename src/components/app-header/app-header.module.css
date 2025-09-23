@@ -22,3 +22,8 @@
   composes: flex-wrap;
   justify-content: end;
 }
+
+.selectable:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}

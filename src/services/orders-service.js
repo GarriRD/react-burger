@@ -111,7 +111,6 @@ const fetchOrderData = async (ingredientsData, abortSignal) => {
   })
   .catch(() => null);
 
-    
 
   return data;
 };

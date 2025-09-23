@@ -79,8 +79,8 @@ IngredientSection.propTypes = {
   type: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   ingredientsData: PropTypes.arrayOf(ingredientDataProp).isRequired,
-  scrollRef: PropTypes.oneOfType(PropTypes.func, scrollPosProp).isRequired,
-  sectionRef: PropTypes.oneOfType(PropTypes.func, PropTypes.element).isRequired
+  scrollRef: scrollPosProp,
+  sectionRef: PropTypes.object
 }
 
 export default IngredientSection;

@@ -26,3 +26,8 @@ li {
   list-style-type: none; 
   padding: 8px 0;
 }
+
+.notice {
+  font-size: 1.25rem;
+  text-align: center;
+}

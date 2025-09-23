@@ -1,16 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getIngredients } from "services/actions/ingredients-slice";
+import { getOrderData } from "./order-slice";
 
 
 const ingredientToArray = (item, count) => {
   return [...Array(count).keys()].map(idx => ({...item, itemId: `${item._id}_${idx}`}));
 }
 
+const setConstructorState = state => {
+  sessionStorage.setItem('constructorState', 
+    JSON.stringify({selectedBun: state.selectedBun, selectedIngredients: state.selectedIngredients})
+  );
+}
+
 const setOrder = (state, action) => {
   
   const selectedItems = action.payload.filter(item => item.count > 0);
+  const selectedBun = selectedItems.filter(item => item.type === 'bun')[0]
+  state.selectedBun = !!selectedBun ? selectedBun : null;
 
-  state.selectedBun = selectedItems.filter(item => item.type === 'bun')[0];
   const selectedIngredients = selectedItems.filter(item => item.type !== 'bun');
 
   const orderItems = selectedIngredients.map(item => {
@@ -21,6 +29,11 @@ const setOrder = (state, action) => {
 
   state.selectedIngredients = orderItems.map((item, idx) => ({...item, itemOrder: idx}));
   state.selectionLoaded = true;
+
+  let constructorState = sessionStorage.getItem('constructorState');
+  if(!constructorState) {
+    setConstructorState(state);
+  }
 };
 
 const selectedIngredientsSlice = createSlice({
@@ -34,7 +47,8 @@ const selectedIngredientsSlice = createSlice({
   reducers: {
     setBun: (state, action) => {
       state.selectedBun = {...action.payload, count: 1};
-      
+    
+      setConstructorState(state);
       return state;
     },
     highlightSwitch: state => {
@@ -45,7 +59,7 @@ const selectedIngredientsSlice = createSlice({
 
     setSelectedIngredients: (state, action) => {
       state.selectedIngredients = action.payload.map((item, idx) => ({...item, itemOrder: idx}));
-
+      setConstructorState(state);
       return state;
     },
     removeSelectedItem: (state, action) => {
@@ -56,7 +70,7 @@ const selectedIngredientsSlice = createSlice({
       })
 
       state.selectedIngredients = selectedIngredients;
-
+      setConstructorState(state);
       return state;
     },
     addSelectedItem: (state, action) => {
@@ -85,13 +99,26 @@ const selectedIngredientsSlice = createSlice({
       });
       
       state.selectedIngredients = selectedIngredients;
-
+      setConstructorState(state);
       return state;
 
+    },
+    setFromState: (state, action) => {
+      state.selectedBun = action.payload.selectedBun;
+      state.selectedIngredients = action.payload.selectedIngredients;
+      state.selectionLoaded = true;
+
+      return state;
     }
   },
   extraReducers: builder => {
-    builder.addCase(getIngredients.fulfilled, setOrder)
+    builder
+    .addCase(getIngredients.fulfilled, setOrder)
+    .addCase(getOrderData.fulfilled, state => {
+      state.selectedBun = null;
+      state.selectedIngredients = [];
+      sessionStorage.removeItem('constructorState');
+    })
   }
   
 });

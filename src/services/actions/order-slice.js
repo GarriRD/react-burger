@@ -3,9 +3,7 @@ import { fetchOrderData } from "services/orders-service";
 
 const getOrderData = createAsyncThunk('order/getId', 
   async ({allIngredientsData, abortSignal}, thunkApi) => {
-    
     const orderData = await fetchOrderData(allIngredientsData, abortSignal);
-    
     if(!orderData) {
       return thunkApi.rejectWithValue('Пустое значение при запросе на обработку заказа');
     }
@@ -37,7 +35,6 @@ const orderSlice = createSlice({
       state.orderLoad = false;
       state.orderError = false;
       state.orderId = action.payload.order.number;
-      
     }).addCase(getOrderData.rejected, state => {
       state.orderLoad = false;
       state.orderError = true;

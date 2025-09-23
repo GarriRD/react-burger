@@ -1,26 +1,18 @@
-import { useMemo, useRef } from "react";
+import { useLayoutEffect, useMemo, useRef } from "react";
 import TabOptions from "./tab-options/tab-options";
 import IngredientSection from "./ingredient-section/ingredient-section";
 import burgerIngredientsStyles from './burger-ingredients.module.css';
 import {  useDispatch, useSelector } from "react-redux";
-import Modal from "components/modal/modal";
-import IngredientDetails from "./ingredient-details/ingredient-details";
-import shownIngredientSlice from "services/actions/shown-ingredient-slice";
+import selectedIngredientsSlice from "services/actions/selected-ingredients-slice";
+import { Outlet } from "react-router";
 
 const BurgerIngredients = () => {
   const dispatch = useDispatch();
+
   const ingredientsData = useSelector(store => store.ingredients.ingredients);
-  
-  const { shownIngredientModalVisible } = useSelector(store => store.shownIngredient)
-  const { modalSwitch } = shownIngredientSlice.actions;
   const sectionRef = useRef();
   const scrollRef = useRef(null);
-  
-  const ingredientDetails = (shownIngredientModalVisible
-    && <Modal modalSwitcher={() => dispatch(modalSwitch())}>
-        <IngredientDetails />
-      </Modal>
-  )
+
 
   const ingredientSections = useMemo(() => {
     const buns = ingredientsData.filter(item => item.type === 'bun');
@@ -52,9 +44,19 @@ const BurgerIngredients = () => {
     );
   }, [ingredientsData]);
 
+  useLayoutEffect(() => {
+    let constructorState = sessionStorage.getItem('constructorState');
+    
+    if(!!constructorState) {
+      constructorState = JSON.parse(constructorState);
+      dispatch(selectedIngredientsSlice.actions.setFromState(constructorState));
+    }
+
+  }, [dispatch]);
+
   return (
     <section className={burgerIngredientsStyles.section}>
-      {ingredientDetails}
+      <Outlet />
       <TabOptions scrollRef={scrollRef} />
       {ingredientSections}
     </section>
