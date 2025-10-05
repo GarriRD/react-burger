@@ -16,7 +16,6 @@ const Feed: FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log('new connect');
     const socket = getFeed(dispatch, feedUrl);
 
     return () => {

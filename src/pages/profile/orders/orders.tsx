@@ -15,7 +15,7 @@ const Orders: FC = () => {
 
   useEffect(() => {
     const socket = getFeed(dispatch, feedUrl, getCookie('token')!.replace('Bearer ', ''));
-    console.log('soecket', socket.readyState, socket);
+    
     return () => {
       socket.close();
       dispatch(resetState());

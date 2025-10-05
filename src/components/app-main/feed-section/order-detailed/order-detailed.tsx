@@ -21,7 +21,6 @@ const OrderDetailed: FC<{ number: number }> = ({ number }) => {
       let order = orders?.filter(item => item.number === number)[0];
       if(!order) {
         order = await fetchOrder(number);
-        console.log('order fetched', order);
       }
     
       setOrderData(order);
@@ -34,7 +33,7 @@ const OrderDetailed: FC<{ number: number }> = ({ number }) => {
   if(pending) {
     return <Notice type="loading" />
   }
-  console.log('pending !orderData', pending, !orderData);
+
   if(!orderData) {
     return <Notice type="error" />
   }
