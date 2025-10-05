@@ -8,6 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1000;
   opacity: 1;
   transition: opacity 1s ease-in;
   animation: fade-in 0.65s;

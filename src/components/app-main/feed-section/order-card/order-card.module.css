@@ -1,0 +1,87 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  max-height: 50vh;
+  width: 25vw;
+  max-width: 35vw;
+  background-color: rgb(32, 32, 32);
+  border-radius: 5%;
+  padding: 1%;
+}
+
+.wrapper:hover {
+  cursor: pointer;
+  background-color: rgb(64, 64, 64);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.name {
+  font-size: 0.9rem;
+  
+}
+
+.icons {
+  display: flex;
+  justify-content: start;
+  height: 100%;
+}
+
+.icon {
+  height: 100%;
+  border: 2px solid rgb(91, 10, 184);
+  border-radius: 50%;
+  margin-left: -7%;
+  background-color: black;
+  box-sizing: border-box;
+  max-width: 15vw;
+}
+
+
+.icon:nth-child(1) {
+  margin-left: 0;
+}
+
+.icon-suffix {
+  margin-left: -9%;
+}
+
+.icon-suffix-count {
+  position: relative;
+  left: 23%;
+  bottom: 35%;
+  font-size: 1.25rem;
+  z-index: 999;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 5%;
+  height: 17%;
+}
+
+.price {
+  composes: row;
+  margin-top: 2%;
+}
+
+
+
+.pending {
+  color: white;
+}
+
+.canceled {
+  color: red;
+}
+
+.done {
+  color: cyan;
+}
+

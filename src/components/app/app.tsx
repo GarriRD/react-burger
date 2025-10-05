@@ -17,6 +17,9 @@ import NotFound from 'pages/not-found/not-found';
 import IngredientTab from "pages/ingredient-tab/ingredient-tab";
 import IngredientModal from "pages/ingredient-modal/ingredient-modal";
 import { useAppDispatch, useAppSelector } from "services/hooks";
+import Feed from "pages/feed/feed";
+import OrderModal from "pages/order-modal/order-modal";
+import OrderTab from "pages/order-tab/order-tab";
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -46,8 +49,13 @@ const App: FC = () => {
       <AppHeader />
       <Routes>
         {!(location.state && location.state.modal) && <Route path='/ingredients/:id' element={<IngredientTab />} />}
+        {!(location.state && location.state.modal) && <Route path='/feed/:number' element={<OrderTab />} />}
+        {!(location.state && location.state.modal) && <Route path='/profile/orders/:number' element={<OrderTab />} />}
         <Route path='/' element={appMain}>
           <Route path="ingredients/:id" element={<IngredientModal />}/>
+        </Route>
+        <Route path='/feed' element={<Feed />}>
+          <Route path=':number' element={<OrderModal />} />
         </Route>
         <Route path='/login' element={<UnauthRoute><Login /></UnauthRoute> } />
         <Route path='/register' element={<UnauthRoute><Register /></UnauthRoute>} />
@@ -64,7 +72,10 @@ const App: FC = () => {
             <Profile>
               <Orders />
             </Profile>  
-          </AuthRoute>} />
+          </AuthRoute>}>
+          
+          <Route path=':number' element={<OrderModal />} />
+        </Route>
         <Route path='*' element={<NotFound />} />
       </Routes>
     </>

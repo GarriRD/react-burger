@@ -4,6 +4,7 @@ import selectedIngredientsSlice from "./selected-ingredients-slice";
 import orderSlice from "./order-slice";
 import userSlice from "./user-slice";
 import authSlice from "./auth-slice";
+import feedSlice from "./feed-slice";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     order: orderSlice.reducer,
     user: userSlice.reducer,
     auth: authSlice.reducer,
+    feed: feedSlice.reducer,
   },
   devTools: process.env.NODE_ENV !== 'production',
 });

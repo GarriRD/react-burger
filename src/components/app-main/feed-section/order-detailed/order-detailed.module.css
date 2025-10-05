@@ -1,0 +1,58 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 50vw;
+  height: 50vh;
+  margin: 5%;
+  gap: 15px;
+}
+
+.text {
+  font-size: 1.1rem;
+}
+
+.number {
+  text-align: center;
+}
+
+.pending {
+  color: white;
+}
+
+.canceled {
+  color: red;
+}
+
+.done {
+  color: cyan;
+}
+
+.row-container {
+  margin-left: -2vw;
+  overflow: auto;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 5%;
+}
+
+.icon {
+  border-radius: 50%;
+  border: 1px solid violet;
+  height: 5vh;
+  margin-top: -1vh
+}
+
+.price {
+  display: flex;
+  gap: 5%;
+}
+
+.footer {
+  margin-top: 5%;
+  display: flex;
+  justify-content: space-between;
+}
