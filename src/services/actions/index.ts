@@ -5,6 +5,7 @@ import orderSlice from "./order-slice";
 import userSlice from "./user-slice";
 import authSlice from "./auth-slice";
 import feedSlice from "./feed-slice";
+import { webSocketMiddleware } from "services/middleware/web-socket";
 
 const store = configureStore({
   reducer: {
@@ -16,9 +17,11 @@ const store = configureStore({
     feed: feedSlice.reducer,
   },
   devTools: process.env.NODE_ENV !== 'production',
+  middleware: getDefaultMiddleware => getDefaultMiddleware({
+    serializableCheck: false
+  }).concat(webSocketMiddleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
-
 
 export default store;

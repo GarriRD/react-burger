@@ -2,13 +2,13 @@ import { Oval } from 'react-loader-spinner';
 import noticeStyles from './notice.module.css';
 import { FC } from 'react';
 
-const Notice: FC<{type: string}> = ({type}) => {
+const Notice: FC<{type: string, extraClass?: string }> = ({type, extraClass}) => {
   const notice = (type === 'loading'
-  ? <span className={`text text_type_main-large ${noticeStyles.wrapper}`} >
+  ? <span className={`text text_type_main-large ${noticeStyles.wrapper} ${extraClass ? extraClass : ''}`} >
       <Oval color='silver' secondaryColor='grey' height={50} width={50} />
       <span>Загрузка...</span>
     </span>
-  : <span className={`text text_type_main-default ${noticeStyles.wrapper}`} >
+  : <span className={`text text_type_main-default ${noticeStyles.wrapper} ${extraClass ? extraClass : ''}`} >
       Ошибка при попытке загрузки. Попытайтесь обновить страницу или обратитесь в нашу поддержу.
       Приносим свои извинения.
   </span>)

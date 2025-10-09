@@ -1,12 +1,12 @@
 import { FC, useMemo, ReactNode, useEffect } from "react";
 import feedStyles from './feed.module.css';
 import StyledText from "components/app-main/styled-text/styled-text";
-import { FeedSocketResponse } from "types/feed";
 import Notice from "components/notice/notice";
 import FeedSection from "components/app-main/feed-section/feed-section";
 import feedSlice from "services/actions/feed-slice";
 import { useAppDispatch, useAppSelector } from "services/hooks";
-import { getFeed } from "utils/feed";
+import { SocketConnectPayload } from "services/actions/types/socket";
+import { socketCloseAction, socketConnectAction } from "services/actions/socket";
 
 const feedUrl = 'wss://norma.nomoreparties.space/orders/all'
 
@@ -16,10 +16,18 @@ const Feed: FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const socket = getFeed(dispatch, feedUrl);
+    const connectPayload: SocketConnectPayload = {
+      url: feedUrl,
+      messageAction: msg => {
+        const { orders, total, totalToday } = msg;
+        dispatch(parseFeedMessage({ orders, total, totalToday }));
+      },
+      errorAction: () => dispatch(setError(true)),
+    };
+    dispatch(socketConnectAction(connectPayload));
 
     return () => {
-      socket.close();
+      dispatch(socketCloseAction());
       dispatch(resetState());
     }
   }, [dispatch, setError, resetState, parseFeedMessage]);

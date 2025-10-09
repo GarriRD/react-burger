@@ -19,6 +19,7 @@ const orderIdUrl = 'https://norma.nomoreparties.space/api/orders';
 const fetchOrderData = 
 async (
   ingredientsData: AllIngredients, 
+  token: string,
   abortSignal?: AbortSignal): ServiceResponse<OrderResponse> => {
   const idsSet = new Set(ingredientsData.map(item => item._id));
   
@@ -29,7 +30,8 @@ async (
   const options = {
     method: 'POST',
     headers: {
-      'content-type': 'application/json'
+      'content-type': 'application/json',
+      'Authorization': token,
     },
     body: ids,
     signal: abortSignal

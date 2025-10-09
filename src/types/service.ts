@@ -1,3 +1,5 @@
+import { OrderData } from "./order";
+
 export type ServiceResponseSuccess<T extends Record<string, any>> = {
   success: true;
 } & T;
@@ -7,7 +9,7 @@ export type ServiceResponseFailure ={
   message: string;
 };
 
-export type ServiceResponse<T extends Record<string, any>> = Promise<ServiceResponseSuccess<T> | ServiceResponseFailure>;
+export type ServiceResponse<T extends Record<string, any> = Record<string, any>> = Promise<ServiceResponseSuccess<T> | ServiceResponseFailure>;
 
 export type OrderResponse = {
   name: string;
@@ -39,6 +41,12 @@ export type ServiceParams = {
   headers?: {
     [key: string]: string;
   }
+}
+
+export type FeedResponse = {
+  orders: OrderData[];
+  total: number;
+  totalToday: number;
 }
 
 export type AuthResponse = TokenResponse & UserResponse

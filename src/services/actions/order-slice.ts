@@ -14,8 +14,8 @@ type SliceState = {
 const getOrderData = createAsyncThunk
 <ServiceResponseSuccess<OrderResponse>, AllIngredientsWithSignal, ThunkApiStringReject>('order/getId',
 
-  async ({allIngredientsData, abortSignal}, thunkApi) => {
-    const orderData = await fetchOrderData(allIngredientsData, abortSignal);
+  async ({allIngredientsData, token, abortSignal}, thunkApi) => {
+    const orderData = await fetchOrderData(allIngredientsData, token, abortSignal);
     
     if(!orderData.success) {
       return thunkApi.rejectWithValue('Пустое значение при запросе на обработку заказа');

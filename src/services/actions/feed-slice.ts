@@ -32,6 +32,7 @@ const feedSlice = createSlice({
       state.total = total ? total : state.total;
       state.totalToday = totalToday ? totalToday : state.totalToday;
       state.orders = orders;
+      state.error = false;
 
       return state;
     },

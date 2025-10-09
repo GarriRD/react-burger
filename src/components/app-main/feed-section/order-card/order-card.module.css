@@ -8,6 +8,7 @@
   background-color: rgb(32, 32, 32);
   border-radius: 5%;
   padding: 1%;
+  gap: 1vh
 }
 
 .wrapper:hover {
@@ -63,7 +64,7 @@
   display: flex;
   justify-content: space-between;
   gap: 5%;
-  height: 17%;
+  height: 3vh;
 }
 
 .price {
@@ -83,5 +84,18 @@
 
 .done {
   color: cyan;
+}
+
+.small {
+  width: 25vw;
+  height: 15vh;
+  margin: 0;
+  padding: 5vh 0;
+  white-space: normal;
+}
+
+.small:hover {
+  cursor: pointer;
+  background-color: rgb(64, 64, 64);  
 }
 

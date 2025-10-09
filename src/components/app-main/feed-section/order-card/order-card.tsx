@@ -1,11 +1,12 @@
-import { FC, ReactNode, useMemo } from "react";
+import { FC, ReactNode, useMemo, useState } from "react";
 import orderCardStyles from './order-card.module.css';
 import { useAppSelector } from "services/hooks";
 import textStyles from 'styles/text.module.css';
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { OrderData } from "types";
+import { OrderData, TIngredientItem } from "types";
 import { useNavigate } from "react-router";
 import { parseDate, parseStatus } from "utils/order";
+import Notice from "components/notice/notice";
 
 const parseImgs = (imgs: string[]): ReactNode => {
   const additional = imgs.length > 4;
@@ -37,20 +38,25 @@ const parseImgs = (imgs: string[]): ReactNode => {
 const OrderCard: FC<{ order: OrderData }> = ({ order}) => {
   const ingredients = useAppSelector(store => store.ingredients.ingredients);
   const dt = parseDate(order.createdAt);
-  const price = order.ingredients.reduce((acc, item) => acc + ingredients.filter(ing => ing._id === item)[0].price, 0);
   const navigate = useNavigate();
-  
+
+  let orderIngredients: TIngredientItem[] | undefined;
+  orderIngredients = order?.ingredients.map(item => ingredients.filter(ing => ing._id === item)[0]);
+  orderIngredients = orderIngredients.some(item => !item) ? undefined : orderIngredients;
+  let price;
+
+  if(orderIngredients) {
+    price = orderIngredients.reduce((acc, item) => acc + item.price, 0);
+  }
+
   const elems = useMemo(() => {
-    const imgs = order.ingredients.reduce((acc, item) => {
-      const img = ingredients.filter(ing => ing._id === item)[0].image;
-      acc.push(img);
+    if(orderIngredients) {
+      const imgs = orderIngredients.map(item => item.image);
   
-      return acc;
-    }, [] as string[]);
-
-    return parseImgs(imgs);
-
+      return parseImgs(imgs);
+    }
   }, [ingredients, order]);
+
 
   const showModal = () => {
     navigate(`${order.number}`, {
@@ -58,6 +64,10 @@ const OrderCard: FC<{ order: OrderData }> = ({ order}) => {
         modal: true,
       } 
     });
+  }
+
+  if(!orderIngredients) {
+    return <Notice type='error' extraClass={orderCardStyles.small}/>;
   }
   
   return (
