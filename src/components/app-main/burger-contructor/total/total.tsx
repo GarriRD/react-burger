@@ -52,7 +52,7 @@ const Total: FC = () => {
       allIngredients.push(...ingredientsData);
     }
     
-    dispatch(getOrderData({ allIngredientsData: [...allIngredients] }));
+    dispatch(getOrderData({ allIngredientsData: [...allIngredients], token: getCookie('token')! }));
     dispatch(modalSwitch());  
   }
   

@@ -27,7 +27,7 @@ const AppHeader: FC = () => {
           iconType={'secondary'} 
           text={'Лента заказов'} 
           textType={'secondary'} 
-          path={'/profile/orders'}
+          path={'/feed'}
         />
       </nav>
       <div className={`${appHeaderStyles['flex-wrap']} ${appHeaderStyles.selectable}`} onClick={handleClick}>
