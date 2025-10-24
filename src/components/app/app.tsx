@@ -25,7 +25,7 @@ const App: FC = () => {
   const dispatch = useAppDispatch();
   const { ingredientsLoad, ingredientsError } = useAppSelector(store => store.ingredients);
   const location = useLocation();
-
+  
   useLayoutEffect(() => {
     const abortController = new AbortController();
     const abortSignal = abortController.signal;

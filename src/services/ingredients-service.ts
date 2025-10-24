@@ -7,7 +7,7 @@
 import { TIngredientBody } from "types";
 
 
-const ingredientsUrl = 'https://norma.nomoreparties.space/api/ingredients'
+const ingredientsUrl = 'https://norma.education-services.ru/api/ingredients'
 
 /*
   Получить полный список ингредиентов

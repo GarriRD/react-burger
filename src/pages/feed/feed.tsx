@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from "services/hooks";
 import { SocketConnectPayload } from "services/actions/types/socket";
 import { socketCloseAction, socketConnectAction } from "services/actions/socket";
 
-const feedUrl = 'wss://norma.nomoreparties.space/orders/all'
+const feedUrl = 'wss://norma.education-services.ru/orders/all'
 
 const Feed: FC = () => {
   const { error, orders, total, totalToday } = useAppSelector(store => store.feed);

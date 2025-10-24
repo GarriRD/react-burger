@@ -7,20 +7,25 @@ import authSlice from "./auth-slice";
 import feedSlice from "./feed-slice";
 import { webSocketMiddleware } from "services/middleware/web-socket";
 
-const store = configureStore({
-  reducer: {
-    ingredients: ingredientsSlice.reducer,
-    selectedIngredients: selectedIngredientsSlice.reducer,
-    order: orderSlice.reducer,
-    user: userSlice.reducer,
-    auth: authSlice.reducer,
-    feed: feedSlice.reducer,
-  },
-  devTools: process.env.NODE_ENV !== 'production',
-  middleware: getDefaultMiddleware => getDefaultMiddleware({
-    serializableCheck: false
-  }).concat(webSocketMiddleware),
-});
+
+export const createStoreInstance = () => {
+  return configureStore({
+    reducer: {
+      ingredients: ingredientsSlice.reducer,
+      selectedIngredients: selectedIngredientsSlice.reducer,
+      order: orderSlice.reducer,
+      user: userSlice.reducer,
+      auth: authSlice.reducer,
+      feed: feedSlice.reducer,
+    },
+    devTools: process.env.NODE_ENV !== 'production',
+    middleware: getDefaultMiddleware => getDefaultMiddleware({
+      serializableCheck: false
+    }).concat(webSocketMiddleware),
+  });
+};
+
+const store = createStoreInstance();
 
 export type RootState = ReturnType<typeof store.getState>;
 

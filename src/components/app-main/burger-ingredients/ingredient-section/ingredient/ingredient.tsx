@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router';
 import { FC } from 'react';
 import { useAppDispatch } from 'services/hooks';
 import { IngredientObject } from './types';
+import { v4 } from 'uuid';
 
 const Ingredient: FC<IngredientObject> = ({ ingredientData }) => {
   const dispatch = useAppDispatch();
@@ -32,7 +33,7 @@ const Ingredient: FC<IngredientObject> = ({ ingredientData }) => {
   }
 
   return ( 
-    <div className={ingredientStyles.wrapper} onClick={showModal} ref={dragRef}>
+    <div className={ingredientStyles.wrapper} onClick={showModal} ref={dragRef} data-testid={`${ingredientData.type}-${v4()}`}>
       <span className={ingredientStyles.preview} style={{backgroundImage: `url(${ingredientData.image})`}}>
         {ingredientData.count > 0 && <Counter count={ingredientData.count} size='default'/>}
       </span>
