@@ -16,8 +16,8 @@ const Login: FC = () => {
   const handleLogin = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const action = async () => {
-      const res = await login(formState.form.email, formState.form.password, formState.signalRef.current);
-
+      const res = await login(formState.form.email, formState.form.password);
+      console.log('res respnse', res);
       if(res.success) {
         
         setCookie('token', res.accessToken, { expires: 20 * 60 });
@@ -58,7 +58,7 @@ const Login: FC = () => {
   }, []);
 
   return (
-    <form className='form-page' onSubmit={handleLogin} onChange={handleInput}>
+    <form className='form-page' onSubmit={handleLogin} onChange={handleInput} data-testid="form-login">
       <span className="text text_type_main-large">Вход</span>
       {formState.error && <span className="text text_type_main-small error-msg">{formState.error}</span>}
       <Input 
@@ -68,14 +68,16 @@ const Login: FC = () => {
         onChange={() => null}
         onPointerEnterCapture={() => null}
         onPointerLeaveCapture={() => null}
+        data-testid="form-login-email"
       />
       <PasswordInput 
         name='password' 
         placeholder={!formState.form.password ? 'Пароль' : ''} 
         value={formState.form.password} 
         onChange={() => null}
+        data-testid="form-login-password"
       />
-      <Button htmlType="submit" type='primary' size="large" disabled={formState.sending}>Войти</Button>
+      <Button htmlType="submit" type='primary' size="large" disabled={formState.sending} data-testid="form-login-send">Войти</Button>
       <span className='form-link'>
         Вы — новый пользователь?
         <Link to='/register'>Зарегистрироваться</Link>

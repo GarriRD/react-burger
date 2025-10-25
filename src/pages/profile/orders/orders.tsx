@@ -9,7 +9,7 @@ import { renewToken } from "services/auth";
 import { useAppDispatch, useAppSelector } from "services/hooks";
 import { getCookie, setCookie } from "services/utils";
 
-const feedUrl = 'wss://norma.nomoreparties.space/orders'
+const feedUrl = 'wss://norma.education-services.ru/orders'
 
 const Orders: FC = () => {
   const dispatch = useAppDispatch();

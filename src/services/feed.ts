@@ -1,6 +1,6 @@
 import { OrderData } from "types"
 
-const baseUrl = 'https://norma.nomoreparties.space/api/orders'
+const baseUrl = 'https://norma.education-services.ru/api/orders'
 
 const fetchOrder = async (number: number): Promise<OrderData | undefined> => {
 

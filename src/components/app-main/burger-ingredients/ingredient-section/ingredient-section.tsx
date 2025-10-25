@@ -63,7 +63,7 @@ const IngredientSection: FC<IngredientSectionProps> = ({title, type, ingredients
   })
 
   return (
-    <div className={ingredientSectionStyles.wrapper} ref={subSectionRef}>
+    <div className={ingredientSectionStyles.wrapper} ref={subSectionRef} data-testid='burger-section'>
       <h2 className={'text text_type_main-large'} >{title}</h2>
       
       <ul className={ingredientSectionStyles.ingredients}>

@@ -28,7 +28,7 @@ const BurgerConstructor: FC = () => {
   const borderClass = highlight ? burgerConstructorStyles.highlighted : ''
 
   return (
-    <section className={`${burgerConstructorStyles.section} ${borderClass}`} ref={dropRef}>
+    <section className={`${burgerConstructorStyles.section} ${borderClass}`} ref={dropRef} data-testid='burger-constructor'>
       {selectionLoaded
       ? <>
           <SelectedItems />

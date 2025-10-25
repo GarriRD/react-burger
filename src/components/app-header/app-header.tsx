@@ -13,7 +13,7 @@ const AppHeader: FC = () => {
 
   return (
     
-    <header className={appHeaderStyles.header}>
+    <header className={appHeaderStyles.header} data-testid="button-constructor">
       <nav className={appHeaderStyles['left-sided']}>
         <HeaderOption 
           iconAlias={'burger'} 
@@ -33,7 +33,7 @@ const AppHeader: FC = () => {
       <div className={`${appHeaderStyles['flex-wrap']} ${appHeaderStyles.selectable}`} onClick={handleClick}>
         <Logo />
       </div>
-      <nav className={appHeaderStyles['right-sided']}>
+      <nav className={appHeaderStyles['right-sided']} data-testid="button-profile">
         <HeaderOption 
           iconAlias={'profile'} 
           iconType={'secondary'} 

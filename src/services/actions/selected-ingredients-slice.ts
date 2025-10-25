@@ -118,17 +118,17 @@ const setFromState:
 }
 
 
-
+export const initState: SliceState = {
+  selectedBun: null,
+  selectedIngredients: [],
+  selectionLoaded: false,
+  selectionHighlighted: false,
+}
 
 
 const selectedIngredientsSlice = createSlice({
   name: 'selectedIngredients',
-  initialState: {
-    selectedBun: null,
-    selectedIngredients: [],
-    selectionLoaded: false,
-    selectionHighlighted: false,
-  } as SliceState,
+  initialState: initState,
   reducers: {
     setBun,
     highlightSwitch,

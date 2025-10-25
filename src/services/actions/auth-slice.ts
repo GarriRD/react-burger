@@ -42,15 +42,17 @@ const setLoginError: CaseReducer<SliceState, PayloadAction<string>> = (state, ac
 
 const setSending: CaseReducer<SliceState, PayloadAction<boolean>> = (state, action) => {
   state.sending = action.payload;
+};
+
+export const initState: SliceState = {
+  logged: false,
+  loginError: null,
+  sending: false,
 }
 
 const authSlice = createSlice({
   name: 'auth',
-  initialState: {
-    logged: false,
-    loginError: null,
-    sending: false,
-  } as SliceState,
+  initialState: initState,
   reducers: {
     login,
     logout,

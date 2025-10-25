@@ -10,7 +10,7 @@ type SliceState = {
 
 type MessagePayload = Required<Pick<SliceState, 'orders'>> & Pick<SliceState, 'total' | 'totalToday'>
 
-const initState: SliceState = {
+export const initState: SliceState = {
   orders: undefined,
   total: undefined,
   totalToday: undefined,
@@ -19,7 +19,7 @@ const initState: SliceState = {
 
 const feedSlice = createSlice({
   name: 'feed',
-  initialState: { ...initState },
+  initialState: initState,
   reducers: {
     setError: (state, action) => {
       state.error = action.payload;

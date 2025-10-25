@@ -1,7 +1,7 @@
 import { AuthResponse, ServiceParams, ServiceResponse, SuccessResponse, TokenResponse, UserResponse } from "types"
 import { UserForm } from "types/user"
 
-const BASE_URL = 'https://norma.nomoreparties.space/api'
+const BASE_URL = 'https://norma.education-services.ru/api'
 
 
 const jsonHeaders = {

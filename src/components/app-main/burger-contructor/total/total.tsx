@@ -58,7 +58,6 @@ const Total: FC = () => {
   
   const loadOrder = () => {
     const action = async () => {
-
       if(!!getCookie('refreshToken')) {
         if (!getCookie('token')) {
             const newToken = await renewToken(getCookie('refreshToken')!);
@@ -95,7 +94,7 @@ const Total: FC = () => {
       <span className='text text_type_main-large'>{total}</span>
       <CurrencyIcon type='primary' />
       {sending && <Oval color='silver' secondaryColor='grey' width={40} height={40} /> }
-      <Button htmlType="button" type="primary" size="large" onClick={loadOrder} disabled={!bunData || sending}>Оформить</Button>
+      <Button htmlType="button" type="primary" size="large" onClick={loadOrder} disabled={!bunData || sending} data-testid='button-order'>Оформить</Button>
     </span>
   );
 }

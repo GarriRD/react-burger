@@ -13,7 +13,7 @@ import { AllIngredients } from "types/order";
   Возвращает идентификаторы ингредиентов и их кол-во
 */
 
-const orderIdUrl = 'https://norma.nomoreparties.space/api/orders';
+const orderIdUrl = 'https://norma.education-services.ru/api/orders';
 
 
 const fetchOrderData = 

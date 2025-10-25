@@ -49,16 +49,18 @@ const getIngredients = createAsyncThunk<TIngredientItem[], AbortSignal, ThunkApi
       
       return parsedIngredients
   }
-)
+);
+
+export const initState: SliceState = {
+  ingredients: [],
+  currentSection: 'bun',
+  ingredientsLoad: false,
+  ingredientsError: false
+};
 
 const ingredinetsSlice = createSlice({
   name: 'ingredients',
-  initialState: {
-    ingredients: [],
-    currentSection: 'bun',
-    ingredientsLoad: false,
-    ingredientsError: false
-  } as SliceState,
+  initialState: initState,
   reducers: {
     setIngredientCount,
     setCurrentSection

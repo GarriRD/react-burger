@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "lib": ["esnext", "dom"],
+    "sourceMap": true,
+    "types": ["cypress", "node", "cypress-real-events", "@4tw/cypress-drag-drop"]
+  },
+  "include": ["**/*.ts", "support/commands.ts"]
+}

@@ -21,7 +21,7 @@ const OrderDetails: FC = () => {
         </span>
       : 
       <>
-        <span className={'text text_type_digits-large'}>{orderId}</span>
+        <span className={'text text_type_digits-large'} data-testid="orderid">{orderId}</span>
         <span className={'text text_type_main-default'}>Идентификатор заказа</span>
         <span className={orderDetailsStyles.mark}>
           <CheckMarkIcon type={'primary'}/>

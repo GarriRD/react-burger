@@ -29,14 +29,16 @@ const modalSwitch: CaseReducer<SliceState, PayloadAction<void>> = state => {
   state.orderModalVisible = !state.orderModalVisible;
 };
 
+export const initState: SliceState = {
+  orderLoad: false,
+  orderError: false,
+  orderId: null,
+  orderModalVisible: false,
+};
+
 const orderSlice = createSlice({
   name: 'order',
-  initialState: {
-    orderLoad: false,
-    orderError: false,
-    orderId: null,
-    orderModalVisible: false,
-  } as SliceState,
+  initialState: initState,
   reducers: {
     modalSwitch
   },
@@ -53,6 +55,7 @@ const orderSlice = createSlice({
     }).addCase(getOrderData.rejected, state => {
       state.orderLoad = false;
       state.orderError = true;
+      state.orderId = null;
     });
   }
 })

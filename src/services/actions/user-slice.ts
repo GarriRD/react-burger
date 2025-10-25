@@ -15,7 +15,7 @@ type SliceState = {
 
 const tokenThunk = async (abortSignal?: AbortSignal): Promise<{success: boolean, payload: string}> => {
   let token = getCookie('token');
-
+  
   if(!token) {
     const refreshToken = getCookie('refreshToken');
     
@@ -45,7 +45,7 @@ const getUser = createAsyncThunk<UserResponse['user'], AbortSignal | undefined, 
     }
 
     const user = await fetchUser(token.payload, abortSignal);
-
+    
     if(!user.success) {
       return thunkApi.rejectWithValue(user.message);
     }
@@ -80,13 +80,15 @@ const setUser: CaseReducer<SliceState, PayloadAction<User>> = (state, action) =>
   return state;
 }
 
+export const initState: SliceState = {
+  user: null,
+  refreshing: false,
+  refreshError: null,
+};
+
 const userSlice = createSlice({
   name: 'user',
-  initialState: {
-    user: null,
-    refreshing: false,
-    refreshError: null,
-  } as SliceState,
+  initialState: initState,
   reducers: {
     setUser
   },
