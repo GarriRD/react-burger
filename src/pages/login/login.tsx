@@ -17,7 +17,7 @@ const Login: FC = () => {
     e.preventDefault();
     const action = async () => {
       const res = await login(formState.form.email, formState.form.password);
-
+      console.log('res respnse', res);
       if(res.success) {
         
         setCookie('token', res.accessToken, { expires: 20 * 60 });

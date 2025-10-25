@@ -35,3 +35,40 @@
 //     }
 //   }
 // }
+
+declare namespace Cypress {
+  interface Chainable {
+    login(): void;
+  }
+}
+
+Cypress.Commands.add('login', () => {
+  const loginBox = '@login-box';
+  cy.visit('/login').wait(500);
+  cy.get('[data-testid="form-login"]').as('login-box')
+  
+  cy.get(loginBox)
+      .find('[data-testid="form-login-email"]')
+      .realClick({ position: 'center'})
+      .wait(200)
+      .realType('test9925@mail.com')
+      .wait(200);
+    
+  cy.get(loginBox)
+    .find('[data-testid="form-login-password"]')
+    .realClick({ position: 'center'})
+    .wait(200)
+    .realType('test')
+    .wait(200);
+
+  cy.get(loginBox)
+    .find('[data-testid="form-login-send"]')
+    // 2 клика т.к. поле с пароле заранее выдаёт ошибку и сбивает обработчик событий, когда тот пытается кликнуть по
+    // кнопке входа
+    .realClick()
+    .wait(200)
+    .realClick()
+    .wait(1000);
+  cy.visit('/').wait(500);
+  
+})

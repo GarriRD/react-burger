@@ -48,3 +48,6 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 ## Project base url. Deployed
 https://garrird.github.io/
+
+## Running cypress tests
+npm run test:cy - Для запуска тестов через командную строкy(требуется хром браузер)

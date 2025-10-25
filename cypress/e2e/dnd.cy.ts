@@ -9,49 +9,27 @@ describe('template spec', () => {
   });
 
   it('Check order can be created', () => {
-    cy.get('[data-testid="button-profile"]')
-      .realClick()
-    
-    cy.get('[data-testid="form-login"]')
-      .find('[data-testid="form-login-email"]')
-      .realClick({ position: 'center'})
-      .wait(200)
-      .realType('test9925@mail.com')
-      .wait(200);
-    
-    cy.get('[data-testid="form-login"]')
-      .find('[data-testid="form-login-password"]')
-      .realClick({ position: 'center'})
-      .wait(200)
-      .realType('test')
-      .wait(200);
+    const buttonOrder = '@buttonOrder';
+    const burgerConstructor = '@burgerConstructor';
 
-    cy.get('[data-testid="form-login"]')
-      .find('[data-testid="form-login-send"]')
-      // 2 клика т.к. поле с пароле заранее выдаёт ошибку и сбивает обработчик событий, когда тот пытается кликнуть по
-      // кнопке входа
-      .realClick()
-      .wait(200)
-      .realClick();
+    cy.login();
+    cy.get('[data-testid="burger-constructor"]').as(burgerConstructor.replace('@', ''));
+    cy.get('[data-testid="button-order"]').as(buttonOrder.replace('@', ''));
 
-    cy.get('[data-testid="button-constructor"]')
-      .realClick()
-      .wait(200);
-
-    cy.get('[data-testid="button-order"]')
+    cy.get(buttonOrder)
       .should('be.disabled');
 
 
     cy.get('[data-testid^="bun"]')
       .first()
-      .drag('[data-testid="burger-constructor"');
+      .drag(burgerConstructor);
     
     cy.get('[data-testid^="sauce"]')
       .first()
-      .drag('[data-testid="burger-constructor"');
+      .drag(burgerConstructor);
 
     
-    cy.get('[data-testid="button-order"]')
+    cy.get(buttonOrder)
       .should('be.enabled')
       .wait(200)
       .realClick()
@@ -60,7 +38,6 @@ describe('template spec', () => {
     cy.get('[data-testid="orderid"]', { timeout: 20000 })
       .should('be.visible');
 
-    
     
   });
 })

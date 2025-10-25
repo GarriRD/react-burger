@@ -5,5 +5,5 @@
     "sourceMap": true,
     "types": ["cypress", "node", "cypress-real-events", "@4tw/cypress-drag-drop"]
   },
-  "include": ["**/*.ts"]
+  "include": ["**/*.ts", "support/commands.ts"]
 }
